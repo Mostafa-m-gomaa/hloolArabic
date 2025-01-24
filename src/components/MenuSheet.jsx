@@ -19,9 +19,13 @@ export function MenuSheet() {
   const [isSheetOpen, setIsSheetOpen] = useState(false); // State to control sheet visibility
 
   const menu = [
-    { name: "الطلبات", link: "/home" },
+    { name: "الصفحة الرئيسية", link: "/home" },
+    { name: "ادارة الطلبات", link: "/home/manageOrders" },
     { name: "المنتجات", link: "/home/products" },
     { name: "الموظفين", link: "/home/users" },
+    { name: "طلباتي", link: "/home/myorders" },
+    { name: "تقاريري", link: "/home/myreports" },
+    { name: "التقارير", link: "/home/reports" },
   ];
 
   const location = useLocation().pathname;
@@ -53,7 +57,9 @@ export function MenuSheet() {
           <Link
             to={`/`}
             className="p-2 text-right rounded-md bg-red-600 cursor-pointer transition-all text-white w-fit"
-            onClick={handleClose} // Close sheet when logout link is clicked
+            onClick={()=>{
+              localStorage.clear()
+            }} 
           >
             تسجيل الخروج
           </Link>

@@ -1,7 +1,7 @@
 import Custom from '@/formik/CustomInput'
 import React from 'react'
 import { CreateUsersValidation } from '@/validation/Validation'
-import { Formik ,Form, Field } from 'formik'
+import { Formik ,Form, Field, ErrorMessage } from 'formik'
 import { Button } from '@/components/ui/button'
 import { useMutation ,useQueryClient } from '@tanstack/react-query'
 import {CretaUser} from '@/api/users'
@@ -57,7 +57,8 @@ const onSubmit=(values)=>{
           <option value="supervisor">مشرف</option>
           <option value="validator">مطابق</option>
         </Field>
-        {touched.role && errors.role && <div className="text-red-500">{errors.role}</div>}
+        <ErrorMessage name='role'  component="div" className="text-red-500"  />
+        {/* {touched.role && errors.role && <div className="text-red-500">{errors.role}</div>} */}
       </div>
       <Button disabled={mutation.isPending} type="submit" >
 {mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "اضافة"}

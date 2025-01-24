@@ -8,8 +8,13 @@ export const login =(credentials)=>{
     })
 }
 
-export const getUsers =()=>{
-    return fetchClient("/users")
+export const getUsers =(parms = {} , page)=>{
+    const filteredParams = Object.fromEntries(
+        Object.entries(parms).filter(([_, value]) => value) // Remove empty values
+      );
+      const queryString = new URLSearchParams(filteredParams).toString();
+      const url = queryString ? `/users?page=${page}&&${queryString}` : `/users?page=${page}`;
+      return fetchClient(url);
 }
 export const CretaUser =(credentials)=>{
     return fetchClient("/users" , {
@@ -34,4 +39,7 @@ export const updateUser =(id , credentials)=>{
 
 export const getOneUser =(id)=>{
     return fetchClient(`/users/${id}`)
+}
+export const getSuperVisors =()=>{
+    return fetchClient(`/users/supervisors`)
 }

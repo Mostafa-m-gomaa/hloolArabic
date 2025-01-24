@@ -19,50 +19,45 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
-  {
-    value: "country",
-    label: "البلد",
-  },
-  {
-    value: "createdAt",
-    label: "تاريخ الانشاء",
-  },
-  {
-    value: "customerName",
-    label: "اسم العميل",
-  },
-  {
-    value: "deliveryDate",
-    label: "تاريخ التوصيل",
-  },
-  {
-    value: "salesPerson",
-    label: "اسم البائع	",
-  },
-  {
-    value: "sellingDate",
-    label: "تاريخ البيع	",
-  },
-  {
-    value: "supervisor",
-    label: "المشرف",
-  },
-  {
-    value: "phone",
-    label: "رقم الهاتف",
-  },
-  {
-    value: "deliveryStatus",
-    label: "حالة التوصيل",
-  },
 
-]
 
-export function ComboboxDemo({setVar}) {
+export function ComboboxOrders({setParam ,forWhat}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   const [label, setLabel] = React.useState("")
+  const [frameworks, setFrameworks] = React.useState([])
+  const usersSearchKeys = [
+    {
+      value: "name",
+      label: "اسم الموظف",
+    },
+    {
+      value: "email",
+      label: "ايميل الموظف",
+    },
+    {
+      value: "role",
+      label: "الدور",
+    }
+  
+  ]
+  const productsSearchKeys = [
+    {
+      value: "title",
+      label: "اسم المنتح",
+    }
+  
+  ]
+
+  React.useEffect(()=>{
+    if(forWhat === "users"){
+      setFrameworks(usersSearchKeys)
+    }
+    else if(forWhat === "products"){
+        setFrameworks(productsSearchKeys)
+        }
+
+  },[])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -90,11 +85,10 @@ export function ComboboxDemo({setVar}) {
                   value={framework.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false) ,
-                    setVar(currentValue)
+                    setOpen(false)        
                     setLabel(framework.label)
-                    
-                  }}
+                    setParam(currentValue)
+                           }}
                 >
                   {framework.label}
                   <Check

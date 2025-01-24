@@ -4,13 +4,14 @@ import { useQuery ,useQueryClient  } from '@tanstack/react-query'
 import Loader from '@/components/Loader'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
-import { getOrders } from '@/api/orders'
+import { getMyReports, getOrders } from '@/api/orders'
 import { ComboboxDemo } from '@/components/CompoBox'
 import { Input } from "@/components/ui/input"
 import { DatePickerDemo } from '@/components/DatePicker'
 import toast from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
-const Orders = () => {
+import { ReportTable } from '@/components/ReportTable'
+const MyReports = () => {
 
 const [page, setPage] = useState(1);
 const [theVariable, setTheVariable] = useState("")
@@ -24,17 +25,16 @@ setQueryObject({[theVariable]:value})
 }
 
 
-
-const { data: orders, isLoading, isFetching, isError } = useQuery({
+const { data: reports, isLoading, isError } = useQuery({
   queryKey: [
     "orders",
     queryObj,
     page
   ],
-  queryFn: ({ queryKey }) => {
-    const params = queryKey[1] || {};
-    const page = queryKey[2] ;
-    return getOrders(params , page); // Pass the entire object
+  queryFn:({queryKey})=>{
+    const params =queryKey[1] || {}
+    const page = queryKey[2]
+    return getMyReports(params , page)
   },
 });
 
@@ -42,25 +42,29 @@ if (isError) {
   return <div>Internet Error</div>;
 }
   
-  console.log(orders)
-const orderItems = orders?.data || []
+  console.log(reports)
+const reportItems = reports?.data || []
 
   
   return (
     <div className='w-[100%]  mx-auto flex flex-col gap-3'>
       <div className="flex w-[90%] mx-auto flex-row-reverse items-center py-4">
-          <h1>الطلبات</h1>
-          <div className="flex  w-[70%]">
+          <h1>تقاريري</h1>
+          <Button>
 
+          <Link to="/home/addreport"> اضافة تقرير</Link>
+          </Button>
+          <div className="flex  w-[70%]">
+{/* 
          <ComboboxDemo setVar={setTheVariable} />
-         {theVariable === "createdAt" || theVariable === "deliveryDate" || theVariable === "sellingDate" ? <DatePickerDemo searchFunc={handleSearchChange} /> :   <Input type="text" placeholder="اكتب هنا" onChange={(e)=>handleSearchChange(e.target.value)} />}
+         {theVariable === "createdAt" || theVariable === "deliveryDate" || theVariable === "sellingDate" ? <DatePickerDemo searchFunc={handleSearchChange} /> :   <Input type="text" placeholder="اكتب هنا" onChange={(e)=>handleSearchChange(e.target.value)} />} */}
 
           </div>
 
       </div>
-          {isLoading ? <Loader />:  <OrdersTable orders={orderItems} />}
+          {isLoading ? <Loader />:  <ReportTable reports={reportItems} />}
      
-          <PaginationDemo page={page} setPage={setPage} numberOfPages={orders?.paginationResult?.numberOfPages} />
+          <PaginationDemo page={page} setPage={setPage} numberOfPages={reports?.paginationResult?.numberOfPages} />
       
    
           
@@ -68,4 +72,4 @@ const orderItems = orders?.data || []
   )
 }
 
-export default Orders
+export default MyReports

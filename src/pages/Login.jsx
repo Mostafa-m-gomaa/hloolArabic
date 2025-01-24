@@ -39,6 +39,9 @@ const Login = () => {
         if(res.user.role === "admin" || res.user.role === "manager" || res.user.role === "validator"){
           history("/home")
         }
+        if(res.user.role === "sales" || res.user.role === "supervisor" ){
+          history("/home/myorders")
+        }
       }
     },
     onError: (error) => {

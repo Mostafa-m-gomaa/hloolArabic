@@ -1,8 +1,21 @@
 import { fetchClient } from "./client";
 
 
-export const getProducts =()=>{
-    return fetchClient("/products")
+// export const getProducts =()=>{
+//     return fetchClient("/products")
+// }
+export const getProducts =(page ,params={})=>{
+
+    const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value) // Remove empty values
+      );
+      const queryString = new URLSearchParams(filteredParams).toString();
+      const url = queryString ? `/products?page=${page}&&${queryString}` : `/products?page=${page}`;
+      return fetchClient(url);
+}
+export const getAvailableProducts =()=>{
+      const url ="/products/available"
+      return fetchClient(url);
 }
 export const getOneProduct =(id)=>{
     return fetchClient(`/products/${id}`)

@@ -1,6 +1,5 @@
 import Custom from '@/formik/CustomInput'
-import React ,{useState} from 'react'
-import { CreateUsersValidation, productValidation } from '@/validation/Validation'
+import React from 'react'
 import { Formik ,Form, Field } from 'formik'
 import { Button } from '@/components/ui/button'
 import { useMutation ,useQuery,useQueryClient } from '@tanstack/react-query'
@@ -8,7 +7,6 @@ import { useMutation ,useQuery,useQueryClient } from '@tanstack/react-query'
 import {Loader2} from "lucide-react"
 import toast from 'react-hot-toast' 
 import { useNavigate, useParams } from 'react-router-dom'
-import { createProduct, getOneProduct, updateProduct } from '@/api/products'
 import { getOneUser, updateUser } from '@/api/users'
 
 
@@ -16,6 +14,7 @@ const UpdateUser = () => {
     const param =useParams().id
     const queryClient = useQueryClient()
     const history = useNavigate()
+   
 
     const {data , isLoading}=useQuery({
         queryKey:["users"],
@@ -25,16 +24,16 @@ const UpdateUser = () => {
 
 console.log(data)
     const initialValues={
-        name:data.data.name,
-        email:data.data.email,
-        role:data.data.role
+        name:data?.data.name,
+        email:data?.data.email,
+        role:data?.data.role
     }
     
     const mutation = useMutation({
         mutationKey:"users",
         mutationFn:({id ,values})=>updateUser(id ,values) ,
         onSuccess:(res)=>{
-            console.log(res)
+      
             if(res.errors){
                 toast.error(res.errors[0].msg)
             }
@@ -48,6 +47,9 @@ console.log(data)
     })
     
     const onSubmit=(values)=>{
+        if(values.email === initialValues.email){
+            delete values.email
+        }
       
         mutation.mutate({id:param ,values})
     }
@@ -72,7 +74,7 @@ console.log(data)
         {touched.role && errors.role && <div className="text-red-500">{errors.role}</div>}
       </div>
       <Button disabled={mutation.isPending} type="submit" >
-{mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "اضافة"}
+{mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "تعديل"}
     </Button>
             </Form>}
          

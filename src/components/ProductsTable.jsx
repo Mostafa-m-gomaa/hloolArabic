@@ -21,7 +21,7 @@ import Loader from "./Loader"
   
  
   
-  export function ProductTable({products ,isLoading}) {
+  export function ProductTable({products }) {
     const queryClient = useQueryClient()
     const mutation =useMutation ({
         mutationFn:({id , credentials})=>updateProduct(id , credentials),
@@ -41,14 +41,17 @@ import Loader from "./Loader"
 
     }
     return (
+     <div className="h-[75vh] overflow-y-auto">
+
+     
       <Table className="w-[95%] mx-auto rtl">
         <TableHeader className="bg-gray-100">
           <TableRow className="capitalize text-[15px] lg:text-[20px] font-bold">
-            <TableHead className="">العنوان</TableHead>
+            <TableHead className="">الاسم</TableHead>
             <TableHead className="">الوصف</TableHead>
             <TableHead className="">السعر</TableHead>
             <TableHead className="">عمولة المشرف</TableHead>
-            <TableHead className="">عمولة البائع</TableHead>
+            <TableHead className="">عمولة المندوب</TableHead>
             <TableHead className="">نشط</TableHead>
           </TableRow>
           </TableHeader>
@@ -87,6 +90,7 @@ import Loader from "./Loader"
  
 
       </Table>
+      </div>
     )
   }
   

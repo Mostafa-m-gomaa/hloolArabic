@@ -6,15 +6,16 @@ import FormikError from './FormikError'
 const Custom = ({name,label,err}) => {
   return (
     <div className="">
-        {/* <label htmlFor={name}>{label}</label> */}
+
             <Field name={name}  >
-             {({field})=> /* From Uiverse.io by ilkhoeri */ 
+             {({field})=> 
 <div 
 
   className="[--clr:#1f1f1f] dark:[--clr:#999999] relative flex flex-row items-center"
 >
   <input
    {...field}
+   type={label.includes("تاريخ" ) ? "date" : "text"}
     className={`${err ? "border-red-500 border-[2px]":""} peer text-black dark:text-white pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full text-inherit block text-left border border-solid  bg-white dark:bg-zinc-800 rounded-[10px] m-0 p-0 outline-0 focus-visible:outline-0 focus-visible:border-teal-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#71717a2e] dark:focus-visible:ring-[#14b8a61a]`}
   />
   <label

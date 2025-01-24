@@ -11,6 +11,13 @@ import AddUser from './pages/AddUser';
 import AddProduct from './pages/AddProduct';
 import UpdateProduct from './pages/UpdateProduct';
 import UpdateUser from './pages/UpdateUser';
+import ManagerOrders from './pages/managerProducts';
+import MyOrders from './pages/MyOrders';
+import AddOrder from './pages/AddOrder';
+import EditOrder from './pages/EditOrder';
+import MyReports from './pages/MyReports';
+import Reports from './pages/Reports';
+import CreateReport from './pages/AddReport';
 
 
 function App() {
@@ -35,8 +42,15 @@ function App() {
     <Route path="products" element={<Products/>} />
     <Route path="addUser" element={<AddUser/>} />
     <Route path="addProduct" element={<AddProduct/>} />
+    <Route path="manageOrders" element={<ManagerOrders/>} />
     <Route path="updateproduct/:id" element={<UpdateProduct/>} />
     <Route path="updateuser/:id" element={<UpdateUser/>} />
+    <Route path="editorder/:id" element={<EditOrder/>} />
+    <Route path="myorders" element={<MyOrders/>} />
+    <Route path="addOrder" element={<AddOrder/>} />
+    <Route path="myreports" element={<MyReports/>} />
+    <Route path="reports" element={<Reports/>} />
+    <Route path="addreport" element={<CreateReport/>} />
     </Route>
   </Routes>
 </div>

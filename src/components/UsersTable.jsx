@@ -45,6 +45,9 @@ import Loader from "./Loader"
 
     }
     return (
+      <div className="h-[75vh] overflow-y-auto">
+
+      
       <Table className="w-[95%] mx-auto rtl">
         <TableHeader className="bg-gray-100">
           <TableRow className="capitalize text-[15px] lg:text-[20px] font-bold">
@@ -82,6 +85,7 @@ import Loader from "./Loader"
 
 
       </Table>
+      </div>
     )
   }
   

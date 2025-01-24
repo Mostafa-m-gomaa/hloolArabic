@@ -24,24 +24,24 @@ const UpdateProduct = () => {
  
 
 const initialValues={
-    title:data.data.title,
-    desc:data.data.desc,
-    ValidityPeriod:data.data.ValidityPeriod,
-    price:data.data.price,
-    salesManCommission:data.data.ValidityPeriod,
-    supervisorCommission:data.data.ValidityPeriod
+    title:data?.data.title,
+    desc:data?.data.desc,
+    ValidityPeriod:data?.data.ValidityPeriod,
+    price:data?.data.price,
+    salesManCommission:data?.data.ValidityPeriod,
+    supervisorCommission:data?.data.ValidityPeriod
 }
 
 
 
 const mutation = useMutation({
-    mutationKey:"users",
+    mutationKey:"products",
     mutationFn:({id ,values})=>updateProduct(id,values) ,
     onSuccess:(res)=>{
         console.log(res)
         if(res.status !== "error"){
 
-            queryClient.invalidateQueries({queryKey:["users"]})
+            queryClient.invalidateQueries({queryKey:["products"]})
             toast.success("تم تعديل المنتج بنجاح")
             history("/home/products")
         }

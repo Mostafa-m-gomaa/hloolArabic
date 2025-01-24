@@ -20,6 +20,11 @@ export function DatePickerDemo({searchFunc}) {
     return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
   }
 
+  function convertToISO(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString();
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -40,8 +45,8 @@ export function DatePickerDemo({searchFunc}) {
           selected={date}
           onSelect={(selectedDate)=>{
             setDate (selectedDate),
-            console.log(formatDate(selectedDate)),
-            searchFunc(formatDate(selectedDate))
+            console.log(convertToISO(selectedDate)),
+            searchFunc(convertToISO(selectedDate))
           }}
           initialFocus
         />

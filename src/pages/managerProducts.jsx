@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input"
 import { DatePickerDemo } from '@/components/DatePicker'
 import toast from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
-const Orders = () => {
+import Card from '@/components/Card'
+const ManagerOrders = () => {
 
 const [page, setPage] = useState(1);
 const [theVariable, setTheVariable] = useState("")
@@ -43,13 +44,13 @@ if (isError) {
 }
   
   console.log(orders)
-const orderItems = orders?.data || []
+
 
   
   return (
     <div className='w-[100%]  mx-auto flex flex-col gap-3'>
       <div className="flex w-[90%] mx-auto flex-row-reverse items-center py-4">
-          <h1>الطلبات</h1>
+          <h1>ادارة الطلبات</h1>
           <div className="flex  w-[70%]">
 
          <ComboboxDemo setVar={setTheVariable} />
@@ -58,8 +59,14 @@ const orderItems = orders?.data || []
           </div>
 
       </div>
-          {isLoading ? <Loader />:  <OrdersTable orders={orderItems} />}
-     
+          {isLoading ? <Loader />: 
+          <div className='w-[98%] lg:w-[95%] mx-auto flex flex-wrap gap-3  justify-center'>
+            {orders&&orders?.data.map((item,index)=>( 
+              <Card key={index} number={index+1} item={item}/>
+          ))}
+            </div>
+   
+          }
           <PaginationDemo page={page} setPage={setPage} numberOfPages={orders?.paginationResult?.numberOfPages} />
       
    
@@ -68,4 +75,4 @@ const orderItems = orders?.data || []
   )
 }
 
-export default Orders
+export default ManagerOrders
