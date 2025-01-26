@@ -41,5 +41,50 @@ export const addOrderValidation =Yup.object({
     product: Yup.string().required("يجب أن تختار المنتج") ,
     notes: Yup.string() ,
     deliveryMan: Yup.string().required("يجب أن تختار رجل التوصيل") ,
-    deliveryCommission: Yup.number().required("يجب أن تدخل عمولة رجل التوصيل") ,
+    deliveryCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا").required("يجب أن تدخل عمولة رجل التوصيل") ,
 })
+
+export const addReportValidationSchema = Yup.object().shape({
+    newOrders: Yup.array()
+      .of(
+        Yup.object().shape({
+                    deposit: Yup.number()
+            .typeError("يجب إدخال مبلغ صالح")
+            .min(0, "المبلغ يجب أن يكون أكبر من صفر"),
+          depositPaymentMethod: Yup.string(),
+          product: Yup.string(),
+        })
+      ),
+    deliveredOrders: Yup.array().of(
+      Yup.object().shape({
+deliveryCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا").required("يجب أن تدخل عمولة رجل التوصيل") ,
+deservedSalesManCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا") ,
+salesManGottenCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا").required("يجب أن تدخل عمولة المندوب") ,
+deservedSupervisorCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا") ,
+supervisorGottenCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا").required("يجب أن تدخل عمولة المشرف") ,
+deliveryReceipt: Yup.number().typeError("يجب أن يكون رقماً صالحاً") ,
+restOrderCost : Yup.array().of(
+  Yup.object().shape({
+    amount: Yup.number()
+    .typeError("يجب إدخال مبلغ صالح")
+    .min(0, "المبلغ يجب أن يكون أكبر من صفر"),
+    paymentMethod: Yup.string()
+  }
+)
+)
+  
+      })
+    ),
+   
+    fuelCost: Yup.number()
+      .typeError("يجب إدخال مبلغ صالح")
+      .required("تكلفة الوقود مطلوبة")
+      .min(0, "التكلفة يجب أن تكون أكبر من صفر"),
+    
+    description: Yup.string()
+      .nullable()
+      .max(500, "الوصف يجب ألا يتجاوز 500 حرف"),
+  });
+
+
+

@@ -56,7 +56,8 @@ const orderItems = orders?.data || []
          {theVariable === "createdAt" || theVariable === "deliveryDate" || theVariable === "sellingDate" ? <DatePickerDemo searchFunc={handleSearchChange} /> :   <Input type="text" placeholder="اكتب هنا" onChange={(e)=>handleSearchChange(e.target.value)} />}
 
           </div>
-          <Button > <Link to="/home/addOrder"> اضافة طلب</Link> </Button>
+          {localStorage.getItem("role") === "sales" &&    <Button > <Link to="/home/addOrder"> اضافة طلب</Link> </Button>}
+       
 
       </div>
           {isLoading ? <Loader />: <OrdersTable orders={orderItems} />}

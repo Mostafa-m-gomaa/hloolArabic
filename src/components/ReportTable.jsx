@@ -84,7 +84,7 @@ import Loader from "./Loader"
   <TableRow key={index} className="text-[14px] lg:text-[18px]">
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{formatDate(item.createdAt)} </TableCell>
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{formatDate(item.updatedAt)} </TableCell>
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.creator.name}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.creator?.name}</TableCell>
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.description}</TableCell>
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.fuelCost}</TableCell>
   </TableRow>

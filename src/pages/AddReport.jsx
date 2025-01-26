@@ -4,208 +4,243 @@ import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import Custom from "@/formik/CustomInput";
+import { addReportValidationSchema } from "@/validation/Validation";
+import { DialogDemo } from "@/components/MyOrdersDialog";
+import { useState } from "react";
+import { createReport } from "@/api/orders";
+import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
-// API Function
-const createReport = async (data) => {
-  // Replace with your API call
-  const response = await fetch("/api/create-report", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) throw new Error("Failed to create report");
-  return response.json();
-};
 
-// Validation Schema
-const validationSchema = Yup.object().shape({
-  newOrders: Yup.array().of(
-    Yup.object().shape({
-      salesMan: Yup.string().required("اسم المندوب مطلوب"),
-      deposit: Yup.number()
-        .required("المبلغ مطلوب")
-        .min(0, "المبلغ يجب أن يكون أكبر من صفر"),
-      depositPaymentMethod: Yup.string().required("طريقة الدفع مطلوبة"),
-      product: Yup.string().required("المنتج مطلوب"),
-    })
-  ),
-  deliveredOrders: Yup.array().of(
-    Yup.object().shape({
-      customerName: Yup.string().required("اسم العميل مطلوب"),
-      deliveryReceipt: Yup.string().required("رقم السند مطلوب"),
-      orderId: Yup.string().required("رقم الطلب مطلوب"),
-      deservedSalesManCommission: Yup.number()
-        .required("العمولة المستحقة مطلوبة")
-        .min(0, "العمولة يجب أن تكون أكبر من صفر"),
-      salesManGottenCommission: Yup.number().required("العمولة المستلمة مطلوبة"),
-      deservedSupervisorCommission: Yup.number().required(
-        "العمولة المستحقة للمشرف مطلوبة"
-      ),
-      supervisorGottenCommission: Yup.number().required(
-        "العمولة المستلمة للمشرف مطلوبة"
-      ),
-      deliveryCommission: Yup.number().required("عمولة التوصيل مطلوبة"),
-      restOrderCost: Yup.array().of(
-        Yup.object().shape({
-          amount: Yup.number()
-            .required("المبلغ المتبقي مطلوب")
-            .min(0, "المبلغ يجب أن يكون أكبر من صفر"),
-          paymentMethod: Yup.string().required("طريقة الدفع مطلوبة"),
-        })
-      ),
-    })
-  ),
-  fuelCost: Yup.number()
-    .required("تكلفة الوقود مطلوبة")
-    .min(0, "التكلفة يجب أن تكون أكبر من صفر"),
-  description: Yup.string().required("الوصف مطلوب"),
-});
+
+
+
+
 
 const CreateReport = () => {
-//   const mutation = useMutation(createReport, {
-//     onSuccess: () => {
-//       toast.success("تم إنشاء التقرير بنجاح");
-//     },
-//     onError: () => {
-//       toast.error("حدث خطأ أثناء إنشاء التقرير");
-//     },
-//   });
+  const history = useNavigate();
+const mutation =useMutation({
+  mutationKey:"createReport",
+  mutationFn:(values)=>createReport(values),
+  onSuccess:(res)=>{
+   
+
+    if(res.status === "success"){
+      toast.success("تم انشاء التقرير بنجاح")
+      history("/home/myreports")
+    }
+  },
+  onError:(error)=>{
+    toast.error("حدث خطأ")
+  }
+})
+
+
+
+const restMoneyObj={amount: "",paymentMethod: "",}
+const deliveredOrdersObj = {
+  customerName: "",
+  deliveryReceipt: "",
+  order: "",
+  deservedSalesManCommission: "",
+  salesManGottenCommission: "",
+  deservedSupervisorCommission: "",
+  supervisorGottenCommission: "",
+  deliveryCommission: "",
+  restOrderCost: [restMoneyObj],
+};
+const newOrdersObj = {
+  salesMan: "",
+  deposit: "",
+  depositPaymentMethod: "",
+  product: "",
+};
 
   const initialValues = {
-    newOrders: [
-      { salesMan: "", deposit: "", depositPaymentMethod: "", product: "" },
-    ],
-    deliveredOrders: [
-      {
-        customerName: "",
-        deliveryReceipt: "",
-        orderId: "",
-        deservedSalesManCommission: "",
-        salesManGottenCommission: "",
-        deservedSupervisorCommission: "",
-        supervisorGottenCommission: "",
-        deliveryCommission: "",
-        restOrderCost: [{ amount: "", paymentMethod: "" }],
-      },
-    ],
-    fuelCost: "",
+    newOrders: [newOrdersObj],
+    deliveredOrders: [deliveredOrdersObj],
+    fuelCost: "50",
     description: "",
   };
 
   const onSubmit = (values) => {
-    // mutation.mutate(values);
-    console.log(values);
+    mutation.mutate(values);
+  
+   
   };
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6 flex flex-col gap-8 items-center">
+          <h1>إنشاء تقرير</h1>
 
    
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize
+      validationSchema={addReportValidationSchema}
      
     >
-      {({ values, errors, touched, isSubmitting }) => (
-        <Form  className="w-[80%] mx-auto">
-          <h1 className="text-xl font-bold">إنشاء تقرير</h1>
-
+      {({ values, setFieldValue }) => (
+        <Form  className="w-[80%] mx-auto flex flex-col gap-8">
           {/* New Orders */}
-          <FieldArray name="newOrders">
+          <h1 className="font-semibold">طلبات جديدة</h1>
+
+          <FieldArray name="newOrders" >
+            
             {({ push, remove }) => (
-              <div>
-                <h2 className="font-semibold">طلبات جديدة</h2>
+              <div className="flex flex-col justify-center gap-10 items-center  w-full  ">
+       
                 {values.newOrders.map((_, index) => (
-                  <div key={index} className="space-y-4 border-b pb-4">
-                    <Field
+                  <div key={index} className=" border-b py-10 px-4 w-[90%] bg-white rounded-md shadow-2xl flex flex-col lg:flex-row  justify-center gap-10 items-center border-2 ">
+                    <Custom
                       name={`newOrders[${index}].salesMan`}
-                      placeholder="اسم المندوب"
-                      className="input"
+                      label="اسم المندوب"
                     />
-                    <Field
+                    <Custom
                       name={`newOrders[${index}].deposit`}
-                      placeholder="المبلغ"
-                      type="number"
-                      className="input"
+                      label="المبلغ"
+                      
+                    
                     />
                     <Field
                       name={`newOrders[${index}].depositPaymentMethod`}
-                      placeholder="طريقة الدفع"
-                      className="input"
-                    />
-                    <Field
+                      as="select"
+                      className="border-2 border-black rounded-lg p-2"
+                    
+                    >   <option value="">طريقة دفع الدفعة المقدمة</option>
+                    <option value="كاش">كاش</option>
+                    <option value="تحويل بنك أهلي">تحويل بنك أهلي</option>
+                    <option value="تحويل بنك راجحي">تحويل بنك راجحي</option>
+                    <option value="supervisor">رقمي</option>
+                    </Field>
+                    <Custom
                       name={`newOrders[${index}].product`}
-                      placeholder="المنتج"
-                      className="input"
+                      label="المنتج"
+                   
                     />
                     <Button onClick={() => remove(index)}>حذف</Button>
                   </div>
                 ))}
-                <Button onClick={() => push({ salesMan: "", deposit: "", depositPaymentMethod: "", product: "" })}>
+                <Button type="button" onClick={() => push(newOrdersObj)}>
                   إضافة طلب جديد
                 </Button>
               </div>
             )}
           </FieldArray>
+          <h1 >طلبات مسلمة</h1>
+
           <FieldArray name="deliveredOrders">
             {({ push, remove }) => (
-              <div>
-                <h2 className="font-semibold">طلبات مسلمة</h2>
+             <div className="flex flex-col justify-center gap-10 items-center  w-full ">
                 {values.deliveredOrders.map((_, index) => (
-                  <div key={index} className="space-y-4 border-b pb-4">
-                    <Field
+                <div key={index} className=" border-b py-10 px-4 w-[90%] bg-white rounded-md shadow-2xl flex flex-col lg:flex-row  justify-center gap-10 items-center border-2 flex-wrap ">
+                        <DialogDemo
+                        setOrder={(order) => {
+                          const updatedDeliveredOrders = [
+                            ...values.deliveredOrders,
+                          ];
+                          updatedDeliveredOrders[index] = {
+                            ...updatedDeliveredOrders[index],
+                            customerName: order.customerName || "",
+                            deliveryReceipt: order.DeliveryReceipt || "",
+                            order: order._id || "",
+                            deservedSalesManCommission:
+                              order.salesManCommission || "",
+                              deservedSupervisorCommission: order.supervisorCommission || "",
+                              deliveryReceipt : order.deliveryReceipt || "",
+                            deliveryCommission: order.deliveryCommission || "",
+                       
+                          };
+                          setFieldValue(
+                            "deliveredOrders",
+                            updatedDeliveredOrders
+                          );
+                        }}
+                      />
+                    <Custom
                       name={`deliveredOrders[${index}].customerName`}
-                      placeholder="اسم العميل"
-                      className="input"
+                      label="اسم العميل"
+                       
                     />
-                    <Field
+                    <Custom
                       name={`deliveredOrders[${index}].deliveryReceipt`}
-                      placeholder="رقم السند"
-                      className="input"
+                      label="رقم السند"
+                       
                     />
-                    <Field
-                      name={`deliveredOrders[${index}].orderId`}
-                      placeholder="رقم الطلب"
-                      className="input"
-                    />
-                    <Field name={`deliveredOrders[${index}].deservedSalesManCommission`} placeholder="العمولة المستحقة" type="number" className="input" />
-                    <Field name={`deliveredOrders[${index}].salesManGottenCommission`} placeholder="العمولة المستلمة" type="number" className="input" />
-                    <Field name={`deliveredOrders[${index}].deservedSupervisorCommission`} placeholder="العمولة المستحقة للمشرف" type="number" className="input" />
-                    <Field name={`deliveredOrders[${index}].supervisorGottenCommission`} placeholder="العمولة المستلمة للمشرف" type="number" className="input" />
-                    <Field name={`deliveredOrders[${index}].deliveryCommission`} placeholder="عمولة التوصيل" type="number" className="input" />
+                   
+                    {/* <Custom name={`deliveredOrders[${index}].orderId`} label="رقم الطلب"/> */}
+                    <Custom name={`deliveredOrders[${index}].deservedSalesManCommission`} label="العمولة المستحقة للمندوب"   />
+                    <Custom name={`deliveredOrders[${index}].salesManGottenCommission`} label="العمولة المسلمة للمندوب"   />
+                    <Custom name={`deliveredOrders[${index}].deservedSupervisorCommission`} label="العمولة المستحقة للمشرف"  />
+                    <Custom name={`deliveredOrders[${index}].supervisorGottenCommission`} label="العمولة المستلمة للمشرف"  />
+                    <Custom name={`deliveredOrders[${index}].deliveryCommission`} label="عمولة التوصيل" />
+                    <FieldArray name={`deliveredOrders[${index}].restOrderCost`}>
+                      {({ push: pushRestOrderCost, remove: removeRestOrderCost }) => (
+                        <div className="flex flex-col gap-4 items-center w-full ">
+                          {values.deliveredOrders[index].restOrderCost.map((_, restIndex) => (
+                            <div key={restIndex} className="flex flex-row-reverse flex-wrap  gap-10 items-center w-[80%] justify-center pt-8 pb-6 rounded-md  bg-gray-200 ">
+                              <Custom
+                                name={`deliveredOrders[${index}].restOrderCost[${restIndex}].amount`}
+                                label="المبلغ المتبقي"
+                             
+                              />
+                              <Field
+                                name={`deliveredOrders[${index}].restOrderCost[${restIndex}].paymentMethod`}
+                                as="select"
+                                className="border-2 border-black rounded-lg p-2"
+                              >
+                                <option value="">طريقة دفع الباقي</option>
+                           
+          <option value="كاش">كاش</option> 
+          <option value="تحويل بنك أهلي">تحويل بنك أهلي</option>
+          <option value="تحويل بنك راجحي">تحويل بنك راجحي</option>
+          <option value="supervisor">رقمي</option>
+                              </Field>
+
+                              <Button onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
+                            </div>
+                          ))}
+                          <Button type="button" onClick={() => pushRestOrderCost(restMoneyObj)}>
+                            إضافة مبلغ متبقي
+                          </Button>
+                        </div>
+                      )}
+                    </FieldArray>
                     
                    
                     <Button onClick={() => remove(index)}>حذف</Button>
                   </div>
                 ))}
-                <Button onClick={() => push({ /* Default deliveredOrder object */ })}>
+                <Button type="button" onClick={() => push(deliveredOrdersObj)}>
                   إضافة طلب مسلّم
                 </Button>
               </div>
             )}
           </FieldArray>
+          <div className="bg-white flex flex-col gap-10 items-center w-[90%] py-10 px-4 rounded-md shadow-2xl border-2 mx-auto" >
 
-          {/* Fuel Cost */}
-          <Field
-            name="fuelCost"
-            placeholder="تكلفة الوقود"
-            type="number"
-            className="input"
-          />
+            <Custom name="fuelCost"
+              label="تكلفة الوقود" />
+            <Custom
+              name="description"
+              label="الوصف"
+            
+            />
+          </div>
 
-          {/* Description */}
-          <Field
-            name="description"
-            placeholder="الوصف"
-            as="textarea"
-            className="textarea"
-          />
 
-          {/* Submit Button */}
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "جاري الإرسال..." : "إرسال"}
-          </Button>
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="animate-spin" />
+جاري الإنشاء
+                </div>
+              ) : (
+                "إنشاء"
+              )}
+            </Button>
         </Form>
       )}
     </Formik>

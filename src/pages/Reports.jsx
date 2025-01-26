@@ -24,7 +24,7 @@ setQueryObject({[theVariable]:value})
 
 const { data: reports, isLoading, isError } = useQuery({
   queryKey: [
-    "orders",
+    "reports",
     queryObj,
     page
   ],
@@ -34,7 +34,7 @@ const { data: reports, isLoading, isError } = useQuery({
     return getReports(params , page)
   },
 });
-
+console.log(reports)
 if (isError) {
   return <div>Internet Error</div>;
 }

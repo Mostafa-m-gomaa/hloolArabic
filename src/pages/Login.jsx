@@ -26,6 +26,7 @@ const Login = () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       console.log(res);
+      console.log(res);
       if(res.status === "fail"){
 
         toast.error(res.message)

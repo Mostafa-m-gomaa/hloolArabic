@@ -27,7 +27,7 @@ setQueryObject({[theVariable]:value})
 
 const { data: reports, isLoading, isError } = useQuery({
   queryKey: [
-    "orders",
+    "reports",
     queryObj,
     page
   ],

@@ -16,11 +16,12 @@ const Custom = ({name,label,err}) => {
   <input
    {...field}
    type={label.includes("تاريخ" ) ? "date" : "text"}
-    className={`${err ? "border-red-500 border-[2px]":""} peer text-black dark:text-white pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full text-inherit block text-left border border-solid  bg-white dark:bg-zinc-800 rounded-[10px] m-0 p-0 outline-0 focus-visible:outline-0 focus-visible:border-teal-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#71717a2e] dark:focus-visible:ring-[#14b8a61a]`}
+   className={`${err ? "border-red-500 border-[2px]":""} peer text-black dark:text-white pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full text-inherit block text-left border border-solid  bg-white dark:bg-zinc-800 rounded-[10px] m-0 p-0 outline-0 focus-visible:outline-0 focus-visible:border-teal-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#71717a2e] dark:focus-visible:ring-[#14b8a61a]`}
+
   />
   <label
     className="cursor-text text-[--clr] inline-block z-0 text-sm mb-px font-normal text-start select-none absolute duration-300 transform origin-[0] translate-x-[32px] peer-focus-visible:text-teal-500 peer-focus-visible:translate-x-[8px] peer-[:not(:placeholder-shown)]:translate-x-[8px] peer-focus-visible:translate-y-[-36px] peer-[:not(:placeholder-shown)]:translate-y-[-36px] peer-[:not(:placeholder-shown)]:text-[-36px]"
-    for="email"
+    htmlFor="email"
   >
     {label}
   </label>
@@ -36,10 +37,10 @@ const Custom = ({name,label,err}) => {
       xmlns="http://www.w3.org/2000/svg"
       width="1rem"
       height="1rem"
-      stroke-linejoin="round"
-      stroke-linecap="round"
+      strokeLinejoin="round"
+      strokeLinecap="round"
       viewBox="0 0 24 24"
-      stroke-width="2"
+      strokeWidth="2"
       fill="none"
       stroke="currentColor"
     >

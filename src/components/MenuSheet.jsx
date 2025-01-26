@@ -12,13 +12,13 @@ import {
 import logo from '../assets/logo.png'
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export function MenuSheet() {
   const [isSheetOpen, setIsSheetOpen] = useState(false); // State to control sheet visibility
 
-  const menu = [
+  const [menu,setMenu] = useState([
     { name: "الصفحة الرئيسية", link: "/home" },
     { name: "ادارة الطلبات", link: "/home/manageOrders" },
     { name: "المنتجات", link: "/home/products" },
@@ -26,12 +26,39 @@ export function MenuSheet() {
     { name: "طلباتي", link: "/home/myorders" },
     { name: "تقاريري", link: "/home/myreports" },
     { name: "التقارير", link: "/home/reports" },
-  ];
+  ])
 
   const location = useLocation().pathname;
 
   const handleClose = () =>  setIsSheetOpen(false); // Function to close the sheet
+useEffect(()=>{
+  const role = localStorage.getItem("role")
+  if(role === "admin"){
+    setMenu([
+      { name: "الصفحة الرئيسية", link: "/home" },
+      { name: "ادارة الطلبات", link: "/home/manageOrders" },
+      { name: "المنتجات", link: "/home/products" },
+      { name: "الموظفين", link: "/home/users" },
+      { name: "تقاريري", link: "/home/myreports" },
+    ])
+  }
+  else if(role === "manager"){
+    setMenu([
+      { name: "الصفحة الرئيسية", link: "/home" },
+      { name: "ادارة الطلبات", link: "/home/manageOrders" },
+      // { name: "تقاريري", link: "/home/myreports" },
+    ])
+  }
+  else if(role === "supervisor" || role === "sales"){
+    setMenu([
+      { name: "طلباتي", link: "/home/myorders" },
+      { name: "تقاريري", link: "/home/myreports" },
+    ])
 
+  }
+ 
+
+},[])
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger asChild>
