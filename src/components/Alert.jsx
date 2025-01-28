@@ -13,6 +13,8 @@ import {
   import { deleteUser } from "@/api/users"
   import { useMutation, useQueryClient } from "@tanstack/react-query"
   import toast from "react-hot-toast"
+  import { Trash2 } from 'lucide-react';
+
   
   export function AlertDelete({id}) {
 
@@ -33,7 +35,7 @@ if(res.status === 'success'){
     return (
       <AlertDialog>
         <AlertDialogTrigger  className="text-left  w-full px-2">
-          حذف
+          <Button className="bg-red-600 p-1 h-fit lg:px-4 lg:py-2" ><Trash2 /></Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

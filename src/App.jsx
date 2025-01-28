@@ -18,6 +18,8 @@ import EditOrder from './pages/EditOrder';
 import MyReports from './pages/MyReports';
 import Reports from './pages/Reports';
 import CreateReport from './pages/AddReport';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 function App() {
@@ -29,6 +31,12 @@ function App() {
     if(!token){
       history("/")
     }
+  }, [])
+
+  useEffect(() => {
+    AOS.init({
+      duration : 2000
+    });
   }, [])
 
   return (

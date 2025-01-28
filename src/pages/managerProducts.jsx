@@ -11,8 +11,9 @@ import { DatePickerDemo } from '@/components/DatePicker'
 import toast from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
 import Card from '@/components/Card'
+import { TabsDemo } from '@/components/tabs'
 const ManagerOrders = () => {
-
+const [deliveryStatus, setDeliveryStatus] = useState("غير جاهز للتسليم")
 const [page, setPage] = useState(1);
 const [theVariable, setTheVariable] = useState("")
 const [queryObj , setQueryObject] = useState({})
@@ -39,6 +40,8 @@ const { data: orders, isLoading, isFetching, isError } = useQuery({
   },
 });
 
+const orderItems = orders?.data || []
+
 if (isError) {
   return <div>Internet Error</div>;
 }
@@ -59,10 +62,12 @@ if (isError) {
           </div>
 
       </div>
+     
+      <TabsDemo  setDeliveryStatus={setDeliveryStatus}/>
           {isLoading ? <Loader />: 
-          <div className='w-[98%] lg:w-[95%] mx-auto flex flex-wrap gap-3  justify-center'>
-            {orders&&orders?.data.map((item,index)=>( 
-              <Card key={index} number={index+1} item={item}/>
+          <div className='w-[98%] lg:w-[95%] mx-auto flex flex-col items-end gap-3 justify-center'>
+            {orderItems.map((item,index)=>( 
+              item?.deliveryStatus === deliveryStatus ? <Card  key={index} number={index+1} item={item}/> : null
           ))}
             </div>
    

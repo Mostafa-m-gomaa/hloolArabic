@@ -14,6 +14,7 @@ import { Link } from "react-router-dom"
 
 export function OrdersTable({orders}) {
   const theOrders = orders || []
+  console.log(orders)
 
  const role = localStorage.getItem("role")
 

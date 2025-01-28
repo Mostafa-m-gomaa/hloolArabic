@@ -11,7 +11,7 @@ import { ComboboxOrders } from '@/components/CompoBoxForOrders'
 import { Input } from "@/components/ui/input"
 import { toast } from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
-import { set } from 'date-fns'
+import UserCard from '@/components/UserCard'
 const Users = () => {
   const [usersItems , setUsersItems] = useState([])
   const [searchParam , setSearchParam] = useState("")
@@ -66,7 +66,16 @@ if (isError) {
           <Button > <Link to="/home/addUser"> اضافة موظف</Link> </Button>
 
       </div>
-          {usersItems.length > 0 || !isLoading ?  <UsersTable users={usersItems} /> : <Loader />}
+          {/* {usersItems.length > 0 || !isLoading ?  <UsersTable users={usersItems} /> : <Loader />} */}
+
+          {isLoading ? <Loader />: 
+          <div className='w-[98%] lg:w-[95%] mx-auto flex flex-col items-end gap-3 justify-center'>
+            {usersItems.map((item,index)=>( 
+             <UserCard  key={index} number={index+1} item={item}/> 
+          ))}
+            </div>
+   
+          }
           <PaginationDemo  currentPage ={page} numberOfPages={numberOfPages} setPage={setPage}/>
 
         

@@ -10,6 +10,7 @@ import {
 import { useMutation , useQueryClient } from "@tanstack/react-query"
 import { Form, Formik , Field } from "formik"
 import toast from "react-hot-toast"
+import { Settings } from 'lucide-react';
 
 export function PopoverDemo({id }) {
     const queryClient = useQueryClient()
@@ -45,7 +46,7 @@ export function PopoverDemo({id }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button >اعداد الطلب</Button>
+        <Button className="p-1 h-fit lg:px-4 lg:py-2" ><Settings /></Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

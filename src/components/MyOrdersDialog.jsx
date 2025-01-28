@@ -80,6 +80,8 @@ export function DialogDemo({setOrder}) {
     
     const orderItems = orders?.data || []
 
+    console.log(orderItems)
+
   return (
     <Dialog >
       <DialogTrigger asChild>
