@@ -4,9 +4,13 @@ import { PopoverDemo } from './PopOver';
 import manIcon from '../assets/man.png'
 import womanIcon from '../assets/woman.png'
 import { ShowPopOver } from './showCardPopOver';
+import { useMutation , useQueryClient } from '@tanstack/react-query';
+import { makeOrderAttheDeliver } from '@/api/orders';
+import { toast } from 'react-hot-toast';
+import { Loader2Icon } from 'lucide-react';
 
-const Card = ({number ,item}) => {
-
+const Card = ({number ,item , anim , ...props}) => {
+const role = localStorage.getItem("role")
     const formatDate = (date) => {
         const validDate = new Date(date);
       
@@ -27,15 +31,27 @@ const Card = ({number ,item}) => {
         return nyDate;
       };
 
+const queryClient = useQueryClient()
+const mutation = useMutation({
+    mutationKey: "orders",
+    mutationFn: () => makeOrderAttheDeliver(item._id),
+    onSuccess: (res) => {
+    toast.success("تم تحديث حالة الطلب بنجاح");
+    queryClient.invalidateQueries("orders")
     
-
+    } ,
+    onError: (err) => {
+        console.log(err)
+    }
+})
    
 
           return (
             
         <div
-        data-aos="fade-right"
-          className="w-[90%] mx-auto bg-white shadow-[0px_0px_15px_rgba(0,0,0,0.09)] py-2 px-4 space-y-3 relative overflow-hidden"
+        onClick={props.click ? ()=>click(item) : null }
+        // data-aos={anim ? "fade-right" : ""}
+        className=" min-h-fit w-[90%] mx-auto bg-white hover:bg-[#3891da] transition-all shadow-[0px_0px_15px_rgba(0,0,0,0.09)] py-2 px-4 space-y-3 relative overflow-hidden"
         >
           <div className="w-14 h-14 lg:w-20 lg:h-20 bg-myBlue rounded-full absolute -right-5 -top-7">
             <p className="absolute bottom-1 left-3  lg:bottom-4 lg:left-5 text-white text-[16px] lg:text-[20px]">{number < 10 ? `0${number}`: number}</p>
@@ -53,9 +69,14 @@ const Card = ({number ,item}) => {
 
                   </div>
     </div>
-    <div className="flex flex-col lg:flex-row items-center gap-2">
-   <PopoverDemo   id={item._id}/>
-<ShowPopOver  item={item}/>    </div>
+                <div className="flex flex-col lg:flex-row items-center gap-2">
+
+                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "غير جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
+                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
+                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <Button type="button" disabled={mutation.isPending} onClick={mutation.mutate}>{mutation.isPending ? <Loader2Icon className='animate-spin' />:"جعله قيد التوصيل"}</Button> : null}
+                  <ShowPopOver item={item} />
+                </div>
+
    </div>
          
     </div>

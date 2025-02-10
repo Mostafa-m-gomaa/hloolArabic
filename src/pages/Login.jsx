@@ -40,9 +40,10 @@ const Login = () => {
         if(res.user.role === "admin" || res.user.role === "manager" || res.user.role === "validator"){
           history("/home")
         }
-        if(res.user.role === "sales" || res.user.role === "supervisor" ){
-          history("/home/myorders")
+        else if(res.user.role === "sales" || res.user.role === "supervisor" ){
+          history("/home/salesHome")
         }
+  
       }
     },
     onError: (error) => {
@@ -78,7 +79,7 @@ if(token){
         <Custom name="email" err={errors.email} label="الايميل" />
         <Custom name="password" err={errors.password} label="كلمة السر" />
       
-      <Button disabled={mutation.isLoading} type="submit" >
+      <Button disabled={mutation.isPending} type="submit" >
 {mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "تسجيل الدخول"}
     </Button>
       </Form>

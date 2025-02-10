@@ -13,7 +13,7 @@ import {
 
 export function ShowPopOver({item}) {
     const formatDate = (date) => {
-        if (!date) return "N/A"; // Return a default value if the date is undefined
+        if (!date) return "غير موجود"; // Return a default value if the date is undefined
         const validDate = new Date(date);
       
         if (isNaN(validDate.getTime())) {
@@ -57,7 +57,10 @@ export function ShowPopOver({item}) {
           <div className="">اسم العميل</div>
           <div className="">تاريخ التوصيل</div>
           <div className="">حالة التوصيل</div>
+          <div className="">مسئول التوصيل</div>
+          <div className="">عمولة التوصيل</div>
           <div className="">اصدار البطاقة</div>
+          <div className="">سند التسليم</div>
           <div className="">سند التسليم</div>
           <div className="">الدفعه المقدمة</div>
           <div className="">طريقة دفع الدفعه المقدمة</div>
@@ -78,34 +81,37 @@ export function ShowPopOver({item}) {
           <div className ="">تاريخ انتهاء المنتج</div>
     </div>
     <div className="w-[53%] text-center flex flex-col gap-4 py-3 *:min-h-[60px] *:max-h-[60px] text-[13px] lg:text-[16px]">
-                <div>{item?.product || "N/A"}</div>
-                <div>{item?.productPrice || "N/A"}</div>
-                <div>{item?.orderPrice || "N/A"}</div>
-                <div>{item?.country || "N/A"}</div>
+                <div>{item?.product || "غير موجود"}</div>
+                <div>{item?.productPrice || "غير موجود"}</div>
+                <div>{item?.orderPrice || "غير موجود"}</div>
+                <div>{item?.country || "غير موجود"}</div>
                 <div>{formatDate(item?.createdAt)}</div>
                 <div>{formatDate(item?.birthDate)}</div>
-                <div>{item?.customerName || "N/A"}</div>
+                <div>{item?.customerName || "غير موجود"}</div>
                 <div>{formatDate(item?.deliveryDate)}</div>
-                <div>{item?.deliveryStatus || "N/A"}</div>
+                <div>{item?.deliveryStatus || "غير موجود"}</div>
+                <div>{item?.deliveryMan?.name || "غير موجود"}</div>
+                <div>{item?.deliveryCommission || "غير موجود"}</div>
                 <div>{item?.productIssuanceDate ?formatDate(item.productIssuanceDate) : "لا يوجد"}</div>
-                <div>{item?.DeliveryReceipt || "N/A"}</div>
-                <div>{item?.deposit || "N/A"}</div>
-                <div>{item?.depositPaymentMethod || "N/A"}</div>
-                <div>{item?.restMoneyPaymentMethod || "N/A"}</div>
-                <div>{item?.notes || "N/A"}</div>
-                <div>{item?.quantity || "N/A"}</div>
-                <div>{item?.salesPerson?.name || "N/A"}</div>
-                <div>{item?.salesManCommission || "N/A"}</div>
+                <div>{item?.DeliveryReceipt || "غير موجود"}</div>
+                <div>{item?.receipt || "غير موجود"}</div>
+                <div>{item?.deposit || "غير موجود"}</div>
+                <div>{item?.depositPaymentMethod || "غير موجود"}</div>
+                <div>{item?.restMoneyPaymentMethod || "غير موجود"}</div>
+                <div>{item?.notes || "غير موجود"}</div>
+                <div>{item?.quantity || "غير موجود"}</div>
+                <div>{item?.salesPerson?.name || "غير موجود"}</div>
+                <div>{item?.salesManCommission || "غير موجود"}</div>
                 <div>{formatDate(item?.sellingDate)}</div>
-                <div>{item?.supervisor?.name || "N/A"}</div>
-                <div>{item?.supervisorCommission || "N/A"}</div>
+                <div>{item?.supervisor?.name || "غير موجود"}</div>
+                <div>{item?.supervisorCommission || "غير موجود"}</div>
                 <div>{formatDate(item?.updatedAt)}</div>
-                <div>{item?.phone || "N/A"}</div>
-                <div>{item?.ValidityPeriod || "N/A"}</div>
-                <div>{item?.expireAfter || "N/A"}</div>
-                <div>{item?.gender || "N/A"}</div>
-                <div>{item?.orderNumber || "N/A"}</div>
-                <div>{formatDate(item?.productEndDate) || "N/A"}</div>
+                <div>{item?.phone || "غير موجود"}</div>
+                <div>{item?.ValidityPeriod || "غير موجود"}</div>
+                <div>{item?.expireAfter || "غير موجود"}</div>
+                <div>{item?.gender || "غير موجود"}</div>
+                <div>{item?.orderNumber || "غير موجود"}</div>
+                <div>{formatDate(item?.productEndDate) || "غير موجود"}</div>
     </div>
  
   </div>

@@ -1,31 +1,38 @@
+
 import React ,{useState} from 'react'
-import { useQuery  } from '@tanstack/react-query'
+import { useQuery   } from '@tanstack/react-query'
 import Loader from '@/components/Loader'
-import {  getReports } from '@/api/orders'
-import { ComboboxDemo } from '@/components/CompoBox'
-import { Input } from "@/components/ui/input"
-import { DatePickerDemo } from '@/components/DatePicker'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { getMyReports, getOrders, getReports } from '@/api/orders'
 import toast from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
-import { ReportTable } from '@/components/ReportTable'
+import ReportCard from '@/components/ReportCard'
+import { ReportsFilter } from '@/components/RepoertsFilter'
+// import ComboboxDemo from '@/components/CompoBox'
 const Reports = () => {
 
 const [page, setPage] = useState(1);
 const [theVariable, setTheVariable] = useState("")
 const [queryObj , setQueryObject] = useState({})
+const [filters,setFilters]= useState({
+  day:"",
+  creator :"",
+  reportDate:"",
+  status:"",
+})
 
-const handleSearchChange = (value) => {
-  if(theVariable === ""){
-    toast.error("اختر الفلتر اولا")
-  }
-setQueryObject({[theVariable]:value})
-}
-
+const handleFilterChange = (key, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [key]: value || undefined, // Ensure empty values are removed
+  }));
+};
 
 const { data: reports, isLoading, isError } = useQuery({
   queryKey: [
     "reports",
-    queryObj,
+    filters,
     page
   ],
   queryFn:({queryKey})=>{
@@ -34,29 +41,33 @@ const { data: reports, isLoading, isError } = useQuery({
     return getReports(params , page)
   },
 });
-console.log(reports)
+
 if (isError) {
   return <div>Internet Error</div>;
 }
-   
+  
+
 const reportItems = reports?.data || []
+console.log(reports)
 
   
   return (
     <div className='w-[100%]  mx-auto flex flex-col gap-3'>
       <div className="flex w-[90%] mx-auto flex-row-reverse items-center py-4">
           <h1>التقارير</h1>
-          <div className="flex  w-[70%]">
-
-         {/* <ComboboxDemo setVar={setTheVariable} />
-         {theVariable === "createdAt" || theVariable === "deliveryDate" || theVariable === "sellingDate" ? <DatePickerDemo searchFunc={handleSearchChange} /> :   <Input type="text" placeholder="اكتب هنا" onChange={(e)=>handleSearchChange(e.target.value)} />} */}
-
-          </div>
-
+    
       </div>
-          {isLoading ? <Loader />:  <ReportTable reports={reportItems} />}
+ <ReportsFilter filterChange={handleFilterChange}/>
+      {isLoading ? <Loader />: 
+          <div className='w-[98%] lg:w-[95%] mx-auto flex flex-col items-end gap-3 justify-center'>
+            {reportItems?.map((item,index)=>( 
+            <ReportCard  key={index} number={index+1} item={item} showDetails={true} />
+          ))}
+            </div>
+   
+          }
      
-          <PaginationDemo page={page} setPage={setPage} numberOfPages={reports?.paginationResult?.numberOfPages} />
+          <PaginationDemo currentPage={page} setPage={setPage} numberOfPages={reports?.paginationResult?.numberOfPages} />
       
    
           

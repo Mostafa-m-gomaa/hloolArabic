@@ -22,6 +22,10 @@ body {
     @apply text-2xl lg:text-4xl font-bold  text-right w-[90%] mx-auto;
   
   }
+  h2 {
+    @apply text-xl lg:text-2xl font-bold  text-right w-[90%] mx-auto;
+  
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -96,4 +100,35 @@ body {
   }
   
 
+}
+
+
+@layer utilities {
+  /* Global Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Scrollbar Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  /* Scrollbar Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  /* Scrollbar Handle on Hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Hide Scrollbar */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
 }

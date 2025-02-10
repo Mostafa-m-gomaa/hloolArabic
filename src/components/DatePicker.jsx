@@ -13,17 +13,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DatePickerDemo({searchFunc}) {
+export function DatePickerDemo({searchFunc , ...props}) {
   const [date, setDate] = React.useState()
   function formatDate(date) {
     const options = { year: 'numeric', month: 'long', day: '2-digit' };
     return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
   }
-
-  function convertToISO(dateString) {
+  function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toISOString();
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
+  
 
   return (
     <Popover>
@@ -36,7 +36,7 @@ export function DatePickerDemo({searchFunc}) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>{props.title || "اختر تاريخ"}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -45,8 +45,7 @@ export function DatePickerDemo({searchFunc}) {
           selected={date}
           onSelect={(selectedDate)=>{
             setDate (selectedDate),
-            console.log(convertToISO(selectedDate)),
-            searchFunc(convertToISO(selectedDate))
+            searchFunc(props.type, formatDate(selectedDate))
           }}
           initialFocus
         />

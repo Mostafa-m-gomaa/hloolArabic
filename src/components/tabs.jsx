@@ -1,68 +1,79 @@
 
+// import {
+//   Tabs,
+//   TabsContent,
+//   TabsList,
+//   TabsTrigger,
+// } from "@/components/ui/tabs"
+// import { BookCheck } from 'lucide-react';
+// import { Ban } from 'lucide-react';
+// import { MailCheck } from 'lucide-react';
+// import { Rss } from 'lucide-react';
+// import { useState } from "react";
+
+
+
+// export function TabsDemo({setDeliveryStatus ,filterChang , categorizedOrders}) {
+//   const data =Object.entries(categorizedOrders) || []
+//   console.log(categorizedOrders)
+//    return (
+//     <Tabs defaultValue="" className="w-[100%] mx-auto  ">
+//       <TabsList className=" w-full min-h-fit flex flex-wrap justify-center gap-4 *:w-[45%] *:lg:w-[20%] *:flex *:items-center *:gap-2">
+//         <TabsTrigger onClick={()=>filterChang("deliveryStatus" ,"غير جاهز للتسليم")} value="غير جاهزة للاستلام"><Ban color="#db0000" /> <span className="text-[12px] lg:text-[15px]">غير جاهزة للاستلام</span></TabsTrigger>
+//         <TabsTrigger onClick={()=>filterChang( "deliveryStatus","جاهز للتسليم")} value="جاهزة للاستلام"><Rss color="#1387b9" /> <span className="text-[12px] lg:text-[15px]" >جاهزة للاستلام</span></TabsTrigger>
+//         <TabsTrigger onClick={()=>filterChang("deliveryStatus","قيد التوصيل" )} value="قيد التوصيل"><MailCheck color="#b98d13" /> <span className="text-[12px] lg:text-[15px]">قيد التوصيل</span></TabsTrigger>
+//         <TabsTrigger onClick={()=>filterChang("deliveryStatus","تم التسليم")} value="تم الاستلام"><BookCheck color="#0ea20b" /> <span className="text-[12px] lg:text-[15px]">تم التسليم</span></TabsTrigger>
+//       </TabsList>
+//       <div className="flex justify-center gap-4 bg-white p-4 rounded-md shadow-lg my-2">
+//       {data?.map(([key, value], index) => (
+//      <span className="text-white bg-myBlue p-2 rounded-md" key={index}>{key}{value}</span>
+//       )
+//       )}
+//       </div>
+
+//     </Tabs>
+  
+//   )
+// }
+
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
-import { BookCheck } from 'lucide-react';
-import { Ban } from 'lucide-react';
+} from "@/components/ui/tabs";
+import { BookCheck, Ban, MailCheck, Rss } from "lucide-react"; // Simplified import
+import { useState } from "react";
 
+export function TabsDemo({ setDeliveryStatus, filterChang, categorizedOrders }) {
+  const data = Object.entries(categorizedOrders || {}); // Prevents crashing if undefined/null
+ 
 
-
-export function TabsDemo({setDeliveryStatus}) {
   return (
-    <Tabs defaultValue="غير جاهزة للاستلام" className="w-[400px] mx-auto">
-      <TabsList className="grid w-full grid-cols-2 *:flex *:items-center *:gap-4">
-        <TabsTrigger onClick={()=>setDeliveryStatus("غير جاهز للتسليم")} value="غير جاهزة للاستلام"><Ban color="#db0000" /> <span>غير جاهزة للاستلام</span></TabsTrigger>
-        <TabsTrigger onClick={()=>setDeliveryStatus("جاهز للتسليم")} value="جاهزة للاستلام"><BookCheck color="#0ea20b" /> <span>جاهزة للاستلام</span></TabsTrigger>
+    <Tabs defaultValue="" className="w-[100%] mx-auto">
+      <TabsList className="w-full min-h-fit flex flex-wrap justify-center gap-4 *:w-[45%] *:lg:w-[20%] *:flex *:items-center *:gap-2">
+        <TabsTrigger onClick={() => filterChang("deliveryStatus", "تم التسليم")} value="تم الاستلام">
+          <BookCheck color="#0ea20b" /> <span className="text-[12px] lg:text-[15px]">تم التسليم</span>
+        </TabsTrigger>
+             
+        <TabsTrigger onClick={() => filterChang("deliveryStatus", "غير جاهز للتسليم")} value="غير جاهزة للاستلام">
+          <Ban color="#db0000" /> <span className="text-[12px] lg:text-[15px]">غير جاهزة للاستلام</span>
+        </TabsTrigger>
+        <TabsTrigger onClick={() => filterChang("deliveryStatus", "قيد التوصيل")} value="قيد التوصيل">
+          <MailCheck color="#b98d13" /> <span className="text-[12px] lg:text-[15px]">قيد التوصيل</span>
+        </TabsTrigger>
+        <TabsTrigger onClick={() => filterChang("deliveryStatus", "جاهز للتسليم")} value="جاهزة للاستلام">
+          <Rss color="#1387b9" /> <span className="text-[12px] lg:text-[15px]">جاهزة للاستلام</span>
+        </TabsTrigger>
       </TabsList>
-      {/* <TabsContent value="account">
-        <Card>
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-            <CardDescription>
-              Make changes to your account here. Click save when you're done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-      <TabsContent value="password">
-        <Card>
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
-        </Card>
-      </TabsContent> */}
+
+      <div className="flex justify-center gap-4 bg-white p-4 rounded-md shadow-lg my-2">
+        {data.map(([key, value], index) => (
+          <span className="text-[10px] lg:text-[13px] text-white bg-myBlue p-2 rounded-md" key={index}>
+            {key} <t/> : {value}
+          </span>
+        ))}
+      </div>
     </Tabs>
-  )
+  );
 }

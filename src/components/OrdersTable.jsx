@@ -73,7 +73,6 @@ export function OrdersTable({orders}) {
           <TableHead className ="">الجنس</TableHead>
           <TableHead className ="">رقم الطلب</TableHead>
           <TableHead className ="">تاريخ انتهاء المنتج</TableHead>
-          <TableHead className ="">actions</TableHead>
         </TableRow>
         </TableHeader>
    
@@ -110,8 +109,6 @@ export function OrdersTable({orders}) {
         <TableCell>{item?.gender || "N/A"}</TableCell>
         <TableCell>{item?.orderNumber || "N/A"}</TableCell>
         <TableCell>{formatDate(item?.productEndDate) || "N/A"}</TableCell>
-        {role === "sales" ?   <TableCell className=" flex justify-center "><Button ><Link to={`/home/editorder/${item._id}`}>تعديل</Link></Button></TableCell>:"no-actions for you"}
-    
       </TableRow>
     ))
   ) : (
@@ -122,12 +119,6 @@ export function OrdersTable({orders}) {
     </TableRow>
   )}
 </TableBody>
-
-
-
-
-
-   
 
 
     </Table>

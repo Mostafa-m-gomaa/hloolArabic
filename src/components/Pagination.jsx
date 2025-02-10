@@ -25,7 +25,7 @@ import toast from "react-hot-toast"
           </PaginationItem>
           {Array.from({ length: numberOfPages }).map((_,index)=> (
             <PaginationItem key={index}>
-            <PaginationLink href="#" isActive={currentPage === index + 1}>
+            <PaginationLink className={"cursor-pointer"} onClick={()=>setPage(index+1)}  isActive={currentPage === index + 1}>
               {index + 1}
             </PaginationLink>
             </PaginationItem>

@@ -22,7 +22,7 @@ export function PopoverDemo({id }) {
     const mutation =useMutation({
         mutationFn:({mutationId,values})=>makeOrderReady(mutationId,values) ,
         onSuccess:(res)=>{
-            console.log(res)
+           
             queryClient.invalidateQueries({queryKey:["orders"]})
             if(res.status === "success"){
                toast.success("تم تحديث الطلب بنجاح")

@@ -17,7 +17,8 @@ import { useQuery } from "@tanstack/react-query"
 import { ComboboxDemo } from "@/components/CompoBox"
 import { DatePickerDemo } from "@/components/DatePicker"
 import { PaginationDemo } from "@/components/Pagination"
-
+import Card from "./Card"
+import { set } from "date-fns"
 
 
 export function DialogDemo({setOrder}) {
@@ -50,6 +51,7 @@ export function DialogDemo({setOrder}) {
     const [queryObj , setQueryObject] = useState({})
     const [activeOrder , setActiveOrder] = useState("")
     const [orderNum, setOrderNum] = useState("")
+    const [open, setOpen] = useState(false);
     
     const handleSearchChange = (value) => {
       if(theVariable === ""){
@@ -80,10 +82,9 @@ export function DialogDemo({setOrder}) {
     
     const orderItems = orders?.data || []
 
-    console.log(orderItems)
 
   return (
-    <Dialog >
+    <Dialog  open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button >{orderNum === "" ? "اختر الطلب" : orderNum}</Button>
       </DialogTrigger>
@@ -98,7 +99,7 @@ export function DialogDemo({setOrder}) {
                  {theVariable === "createdAt" || theVariable === "deliveryDate" || theVariable === "sellingDate" ? <DatePickerDemo searchFunc={handleSearchChange} /> :   <Input type="text" placeholder="اكتب هنا" onChange={(e)=>handleSearchChange(e.target.value)} />}
         
                   </div>
-        <div className="flex flex-wrap justify-center gap-3  max-w-[95%] mx-auto">
+        {/* <div className="flex flex-wrap justify-center gap-3  max-w-[95%] mx-auto">
 
                   {orderItems.map((order, i) => (
                       <div onClick={()=>{
@@ -115,7 +116,22 @@ export function DialogDemo({setOrder}) {
                           
                       </div>
                   ))}
-        </div>
+        </div> */}
+
+<div className='w-[98%] lg:w-[95%] mx-auto flex flex-col items-end gap-3 justify-center'>
+            {orderItems.map((item,index)=>( 
+             <Card  key={index} number={index+1} item={item} anim={false} click={
+                (item)=>{
+                    setOrder(item) 
+                    setActiveOrder(item._id)
+                    setOrderNum(item?.product )
+                    setOpen(false)
+                  }
+             }
+             role="supervisor"
+             /> 
+          ))}
+            </div>
 
           <PaginationDemo page={page} setPage={setPage} numberOfPages={orders?.paginationResult?.numberOfPages} />
    

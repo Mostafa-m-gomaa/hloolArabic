@@ -28,6 +28,16 @@ export const getMyOrders = (params = {} , page) => {
         body:JSON.stringify(params)
     })
   }
+  export const makeOrderAttheDeliver =(id )=>{
+
+    const url = `/orders/${id}`
+    return fetchClient(url , {
+        method:"PUT",
+        body:JSON.stringify({
+          deliveryStatus:"قيد التوصيل"
+        })
+    })
+  }
   export const createOrder =(params)=>{
     const url = `/orders`
     return fetchClient(url , {
@@ -63,5 +73,30 @@ export const getMyReports = (params = {} , page) => {
     return fetchClient(url , {
         method:"POST",
         body:JSON.stringify(params)
+    })
+  }
+
+  export const getOneReport =(id)=>{
+    return fetchClient(`/reports/details/${id}`)
+  }
+  export const approveReport =(id)=>{
+    return fetchClient(`/reports/confirm/${id}`, {
+        method:"PATCH"
+    })
+  }
+
+
+  // cash verification section
+
+  export const cashVerify =()=>{
+    return fetchClient(`/cash-verification-requests/mine`)
+  }
+
+  export const verifyCash =(id)=>{
+    return fetchClient(`/cash-verification-requests/${id}`, {
+        method:"PUT" ,
+        body:JSON.stringify({
+          "reply":true
+        })
     })
   }

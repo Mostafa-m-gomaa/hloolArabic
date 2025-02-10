@@ -20,6 +20,9 @@ import Reports from './pages/Reports';
 import CreateReport from './pages/AddReport';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import ReportDetails from './pages/ReportDetails';
+import ManagersHome from './pages/ManagersHome';
+import SalesHome from './pages/salesHome';
 
 
 function App() {
@@ -45,7 +48,9 @@ function App() {
   <Routes>
     <Route path="/" element={<Login/>} />
     <Route path="/home" element={<HomeLayOut/>} >
-    <Route path="" element={<Orders/>} />
+    <Route path="" element={<ManagersHome/>} />
+    <Route path="salesHome" element={<SalesHome/>} />
+    <Route path="managersHome" element={<ManagersHome/>} />
     <Route path="users" element={<Users/>} />
     <Route path="products" element={<Products/>} />
     <Route path="addUser" element={<AddUser/>} />
@@ -59,6 +64,7 @@ function App() {
     <Route path="myreports" element={<MyReports/>} />
     <Route path="reports" element={<Reports/>} />
     <Route path="addreport" element={<CreateReport/>} />
+    <Route path="onereport/:id" element={<ReportDetails/>} />
     </Route>
   </Routes>
 </div>

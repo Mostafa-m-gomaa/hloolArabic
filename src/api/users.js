@@ -16,6 +16,7 @@ export const getUsers =(parms = {} , page)=>{
       const url = queryString ? `/users?page=${page}&&${queryString}` : `/users?page=${page}`;
       return fetchClient(url);
 }
+
 export const CretaUser =(credentials)=>{
     return fetchClient("/users" , {
         method:"POST",
@@ -42,4 +43,8 @@ export const getOneUser =(id)=>{
 }
 export const getSuperVisors =()=>{
     return fetchClient(`/users/supervisors`)
+}
+
+export const getSalesMan =()=>{
+    return fetchClient("/users/salesmen")
 }

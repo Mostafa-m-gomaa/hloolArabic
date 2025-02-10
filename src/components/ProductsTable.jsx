@@ -41,7 +41,7 @@ import Loader from "./Loader"
 
     }
     return (
-     <div className="h-[75vh] overflow-y-auto">
+     <div className="h-[75vh] overflow-y-auto bg-white py-2">
 
      
       <Table className="w-[95%] mx-auto rtl">

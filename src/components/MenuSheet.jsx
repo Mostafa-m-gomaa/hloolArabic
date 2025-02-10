@@ -52,20 +52,36 @@ useEffect(()=>{
       { name: "ادارة الطلبات", link: "/home/manageOrders" , icon:<ArrowDownUp/> },
       { name: "المنتجات", link: "/home/products" , icon:<ShoppingBasket/> },
       { name: "الموظفين", link: "/home/users" , icon:<Users/> },
-      { name: "التقارير", link: "/home/myreports", icon:<ClipboardMinus/> },
+      { name: "التقارير", link: "/home/reports", icon:<ClipboardMinus/> },
     ])
   }
   else if(role === "manager"){
     setMenu([
-      { name: "الصفحة الرئيسية", link: "/home" , icon:<House/> },
+      { name: "الصفحة الرئيسية", link: "/home/managersHome" , icon:<House/> },
       { name: "ادارة الطلبات", link: "/home/manageOrders" , icon:<ArrowDownUp/> },
-      // { name: "تقاريري", link: "/home/myreports" },
+      { name: "التقارير", link: "/home/reports"},
     ])
   }
-  else if(role === "supervisor" || role === "sales"){
+  else if(role === "sales"){
     setMenu([
+      { name: "الصفحة الرئيسية", link: "/home/salesHome" , icon:<House/> },
+      { name: "طلباتي", link: "/home/myorders" , icon:<ClipboardPlus/> },
+    
+    ])
+
+  }
+  else if(role === "supervisor"){
+    setMenu([
+      { name: "الصفحة الرئيسية", link: "/home/salesHome" , icon:<House/> },
       { name: "طلباتي", link: "/home/myorders" , icon:<ClipboardPlus/> },
       { name: "تقاريري", link: "/home/myreports" , icon:<ClipboardMinus/> },
+    ])
+
+  }
+  else if(role === "validator"){
+    setMenu([
+      { name: "الصفحة الرئيسية", link: "/home" , icon:<House/> },
+      { name: "التقارير", link: "/home/reports", icon:<ClipboardMinus/> },
     ])
 
   }
