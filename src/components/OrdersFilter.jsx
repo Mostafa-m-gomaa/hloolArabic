@@ -4,7 +4,7 @@ import * as React from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "@/api/users"
 import { DatePickerDemo } from "./DatePicker"
-import  InputSearch from "./InputSearch"
+import  InputSearch from "./inputSearch"
 import { getProducts } from "@/api/products"
 
 
