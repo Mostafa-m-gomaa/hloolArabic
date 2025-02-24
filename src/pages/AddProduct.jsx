@@ -21,7 +21,8 @@ const initialValues={
     ValidityPeriod:"",
     price:"",
     salesManCommission:"",
-    supervisorCommission:""
+    supervisorCommission:"" ,
+        deliveryCommission:""
 }
 
 const mutation = useMutation({
@@ -42,7 +43,7 @@ const onSubmit=(values)=>{
 
   return (
     <div className='w-[100%] mx-auto flex flex-col gap-3'>
-        <h1 className='py-12'>املأ البيانات الأتية لأضافة موظف</h1>
+        <h1 className='py-12'>املأ البيانات الأتية لأضافة منتج</h1>
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={productValidation} >
             {({errors ,touched})=>    <Form className='flex flex-col gap-10 w-[80%] mx-auto py-7'>
                 
@@ -52,6 +53,7 @@ const onSubmit=(values)=>{
                 <Custom label="السعر" name="price" err={errors.price}  />
                 <Custom label="عمولة البائع" name="salesManCommission" err={errors.salesManCommission}  />
                 <Custom label="عمولة المشرف" name="supervisorCommission" err={errors.supervisorCommission}  />
+                <Custom label="عمولة رجل التوصيل" name="deliveryCommission" err={errors.deliveryCommission}  />
                 <div>
      
 

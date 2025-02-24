@@ -39,6 +39,7 @@ const [filters,setFilters]= useState({
   sellingDate:"",
   supervisor:"",
   supervisorCommission:"",
+  daysAgo:"",
 })
 
 const handleFilterChange = (key, value) => {

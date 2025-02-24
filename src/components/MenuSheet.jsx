@@ -53,6 +53,7 @@ useEffect(()=>{
       { name: "المنتجات", link: "/home/products" , icon:<ShoppingBasket/> },
       { name: "الموظفين", link: "/home/users" , icon:<Users/> },
       { name: "التقارير", link: "/home/reports", icon:<ClipboardMinus/> },
+      { name: "المستحقات علي المشرفين", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },
     ])
   }
   else if(role === "manager"){
@@ -60,6 +61,7 @@ useEffect(()=>{
       { name: "الصفحة الرئيسية", link: "/home/managersHome" , icon:<House/> },
       { name: "ادارة الطلبات", link: "/home/manageOrders" , icon:<ArrowDownUp/> },
       { name: "التقارير", link: "/home/reports"},
+      { name: "المستحقات علي المشرفين", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },
     ])
   }
   else if(role === "sales"){
@@ -75,6 +77,7 @@ useEffect(()=>{
       { name: "الصفحة الرئيسية", link: "/home/salesHome" , icon:<House/> },
       { name: "طلباتي", link: "/home/myorders" , icon:<ClipboardPlus/> },
       { name: "تقاريري", link: "/home/myreports" , icon:<ClipboardMinus/> },
+      { name: "المستحقات عليا", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },
     ])
 
   }
@@ -82,6 +85,7 @@ useEffect(()=>{
     setMenu([
       { name: "الصفحة الرئيسية", link: "/home" , icon:<House/> },
       { name: "التقارير", link: "/home/reports", icon:<ClipboardMinus/> },
+      { name: "المستحقات علي المشرفين", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },
     ])
 
   }

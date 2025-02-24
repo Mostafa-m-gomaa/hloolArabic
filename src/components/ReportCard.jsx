@@ -37,7 +37,7 @@ const ReportCard = ({item , number , ...props}) => {
           return (
             
         <div
-        data-aos="fade-right"
+   
         className=" min-h-fit w-[90%] mx-auto bg-white transition-all shadow-[0px_0px_15px_rgba(0,0,0,0.09)] py-2 px-4 space-y-3 relative overflow-hidden"
         >
           <div className="w-14 h-14 lg:w-20 lg:h-20 bg-myBlue rounded-full absolute -right-5 -top-7">

@@ -42,7 +42,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { BookCheck, Ban, MailCheck, Rss } from "lucide-react"; // Simplified import
+import { BookCheck, Ban, MailCheck, Rss } from "lucide-react"; 
+import { LoaderPinwheel } from 'lucide-react';
 import { useState } from "react";
 
 export function TabsDemo({ setDeliveryStatus, filterChang, categorizedOrders }) {
@@ -51,19 +52,28 @@ export function TabsDemo({ setDeliveryStatus, filterChang, categorizedOrders }) 
 
   return (
     <Tabs defaultValue="" className="w-[100%] mx-auto">
-      <TabsList className="w-full min-h-fit flex flex-wrap justify-center gap-4 *:w-[45%] *:lg:w-[20%] *:flex *:items-center *:gap-2">
+      <TabsList className="w-full min-h-fit flex flex-wrap justify-center gap-4 *:w-[45%] *:lg:w-[10%] *:flex *:items-center *:gap-2">
         <TabsTrigger onClick={() => filterChang("deliveryStatus", "تم التسليم")} value="تم الاستلام">
           <BookCheck color="#0ea20b" /> <span className="text-[12px] lg:text-[15px]">تم التسليم</span>
         </TabsTrigger>
              
         <TabsTrigger onClick={() => filterChang("deliveryStatus", "غير جاهز للتسليم")} value="غير جاهزة للاستلام">
-          <Ban color="#db0000" /> <span className="text-[12px] lg:text-[15px]">غير جاهزة للاستلام</span>
+        <LoaderPinwheel />  <span className="text-[12px] lg:text-[15px]">غير جاهزة للاستلام</span>
         </TabsTrigger>
         <TabsTrigger onClick={() => filterChang("deliveryStatus", "قيد التوصيل")} value="قيد التوصيل">
           <MailCheck color="#b98d13" /> <span className="text-[12px] lg:text-[15px]">قيد التوصيل</span>
         </TabsTrigger>
         <TabsTrigger onClick={() => filterChang("deliveryStatus", "جاهز للتسليم")} value="جاهزة للاستلام">
           <Rss color="#1387b9" /> <span className="text-[12px] lg:text-[15px]">جاهزة للاستلام</span>
+        </TabsTrigger>
+        <TabsTrigger onClick={() => filterChang("deliveryStatus", "ملغي")} value="ملغي">
+        <Ban color="#db0000" /><span className="text-[12px] lg:text-[15px]">الملغي</span>
+        </TabsTrigger>
+        <TabsTrigger onClick={() => filterChang("daysAgo", "45")} value="45">
+        <div className="text-[30px]">45</div><span className="text-[12px] lg:text-[15px]">45 يوم</span>
+        </TabsTrigger>
+        <TabsTrigger onClick={() => filterChang("daysAgo", "60")} value="65">
+        <div className="text-[30px]">60</div><span className="text-[12px] lg:text-[15px]">60 يوم</span>
         </TabsTrigger>
       </TabsList>
 

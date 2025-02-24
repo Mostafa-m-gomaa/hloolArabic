@@ -38,6 +38,27 @@ export const getMyOrders = (params = {} , page) => {
         })
     })
   }
+  export const cancelTheOrder =(id )=>{
+
+    const url = `/orders/${id}`
+    return fetchClient(url , {
+        method:"PUT",
+        body:JSON.stringify({
+          deliveryStatus:"ملغي"
+        })
+    })
+  }
+  export const retrieveOrder =(id )=>{
+
+    const url = `/orders/${id}`
+    return fetchClient(url , {
+        method:"PUT",
+        body:JSON.stringify({
+          deliveryStatus:"غير جاهز للتسليم"
+        })
+    })
+  }
+
   export const createOrder =(params)=>{
     const url = `/orders`
     return fetchClient(url , {
@@ -75,6 +96,15 @@ export const getMyReports = (params = {} , page) => {
         body:JSON.stringify(params)
     })
   }
+  export const onProgressReport =(id)=>{
+    const url = `/reports/${id}`
+    return fetchClient(url , {
+        method:"PATCH",
+        body:JSON.stringify({
+          status:"قيد المطابقه"
+        })
+    })
+  }
 
   export const getOneReport =(id)=>{
     return fetchClient(`/reports/details/${id}`)
@@ -91,12 +121,34 @@ export const getMyReports = (params = {} , page) => {
   export const cashVerify =()=>{
     return fetchClient(`/cash-verification-requests/mine`)
   }
+  export const getCompanydues =()=>{
+    return fetchClient(`/company-dues`)
+  }
+
+  export const getDues = (params = {} , page) => {
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value) // Remove empty values
+    );
+    const queryString = new URLSearchParams(filteredParams).toString();
+    const url = queryString ? `/company-dues?page=${page}&&${queryString}` : `/company-dues?page=${page}`;
+    return fetchClient(url);
+  };
 
   export const verifyCash =(id)=>{
     return fetchClient(`/cash-verification-requests/${id}`, {
         method:"PUT" ,
         body:JSON.stringify({
-          "reply":true
+          reply:true
         })
+    })
+  }
+
+
+  export const payDues =(id , params)=>{
+
+    const url = `/company-dues/${id}`
+    return fetchClient(url , {
+        method:"PATCH",
+        body:JSON.stringify(params)
     })
   }

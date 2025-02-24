@@ -5,7 +5,7 @@ import manIcon from '../assets/man.png'
 import womanIcon from '../assets/woman.png'
 import { ShowPopOver } from './showCardPopOver';
 import { useMutation , useQueryClient } from '@tanstack/react-query';
-import { makeOrderAttheDeliver } from '@/api/orders';
+import { cancelTheOrder, makeOrderAttheDeliver, retrieveOrder } from '@/api/orders';
 import { toast } from 'react-hot-toast';
 import { Loader2Icon } from 'lucide-react';
 
@@ -44,12 +44,36 @@ const mutation = useMutation({
         console.log(err)
     }
 })
+const cancelMutation = useMutation({
+    mutationKey: "orders",
+    mutationFn: () => cancelTheOrder(item._id),
+    onSuccess: (res) => {
+    toast.success("تم تحديث حالة الطلب بنجاح");
+    queryClient.invalidateQueries("orders")
+    
+    } ,
+    onError: (err) => {
+        console.log(err)
+    }
+})
+const retrieveMutation = useMutation({
+    mutationKey: "orders",
+    mutationFn: () => retrieveOrder(item._id),
+    onSuccess: (res) => {
+    toast.success("تم تحديث حالة و نقله الي غير جاهز للتسليم");
+    queryClient.invalidateQueries("orders")
+    
+    } ,
+    onError: (err) => {
+        console.log(err)
+    }
+})
    
 
           return (
             
         <div
-        onClick={props.click ? ()=>click(item) : null }
+        onClick={props.click ? ()=>props.click(item) : null }
         // data-aos={anim ? "fade-right" : ""}
         className=" min-h-fit w-[90%] mx-auto bg-white hover:bg-[#3891da] transition-all shadow-[0px_0px_15px_rgba(0,0,0,0.09)] py-2 px-4 space-y-3 relative overflow-hidden"
         >
@@ -74,6 +98,8 @@ const mutation = useMutation({
                   {["manager" , "admin"].includes(role) && props.deliveryStatus === "غير جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
                   {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
                   {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <Button type="button" disabled={mutation.isPending} onClick={mutation.mutate}>{mutation.isPending ? <Loader2Icon className='animate-spin' />:"جعله قيد التوصيل"}</Button> : null}
+                  {["manager" , "admin"].includes(role) &&  !["تم التسليم" , "ملغي"].includes(props.deliveryStatus) ? <Button className="bg-red-500" type="button" disabled={cancelMutation.isPending} onClick={cancelMutation.mutate}>{cancelMutation.isPending ? <Loader2Icon className='animate-spin' />:"الغاء الطلب"}</Button> : null}
+                  {["manager" , "admin"].includes(role) &&  ["ملغي"].includes(props.deliveryStatus) ? <Button  type="button" disabled={retrieveMutation.isPending} onClick={retrieveMutation.mutate}>{retrieveMutation.isPending ? <Loader2Icon className='animate-spin' />:"استرجاع الطلب"}</Button> : null}
                   <ShowPopOver item={item} />
                 </div>
 

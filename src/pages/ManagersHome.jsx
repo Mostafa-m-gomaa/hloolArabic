@@ -5,6 +5,8 @@ import MyChart from '@/components/MyChart';
 import AreaChartComponent from '@/components/AreaChartFillByValue';
 import CustomBarChart from '@/components/CustomBarChart';
 import Orders from './Orders';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const ManagersHome = () => {
   return (
@@ -30,6 +32,7 @@ const ManagersHome = () => {
     </div>
     {/* <MyChart /> */}
     <div className="w-full bg-white p-4 rounded-md shadow-lg overflow-auto">
+      <Button><Link to="/home/orders">الذهاب الي القالب الرئيسي</Link></Button>
 <Orders />
     </div>
            

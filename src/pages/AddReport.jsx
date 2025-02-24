@@ -120,6 +120,7 @@ const mutation =useMutation({
 
 
 const restMoneyObj={amount: "",paymentMethod: "",}
+const depositOrder={order: "",paymentMethod: "", deposit: "",}
 const burnOutsObj = {
   description : "",
   amount : "",
@@ -147,10 +148,10 @@ const newOrdersObj = {
     outgoings : outgoings,
     categorizedMoney: categorizedMoney,
     burnOuts : [burnOutsObj],
-    fuelCost: "50",
+    fuelCost: "50", 
     description: "",
-    restCompanyMoney: cash,
-    gottenRestCompanyMoney: cash,
+    companyDues: cash,
+    extraDeposits: [depositOrder],
   };
 
   
@@ -171,8 +172,7 @@ const newOrdersObj = {
       else{
         values.outgoings = outgoings;
         values.categorizedMoney = categorizedMoney;
-        values.restCompanyMoney = cash;
-        values.gottenRestCompanyMoney = cash;
+        values.companyDues = cash;
         // console.log(values);
         mutation.mutate(values);
    
@@ -288,6 +288,19 @@ return Array.from(commissionMap.values())
   
         // Check if deposit payment method is "كاش" and add to totalCash
         if (depositPaymentMethod === "كاش") {
+          totalCash += parseFloat(deposit);
+        }
+      }
+    });
+    values.extraDeposits.forEach(({ deposit, paymentMethod }) => {
+      if (deposit && paymentMethod) {
+        if (!categorizedMoney[paymentMethod]) {
+          categorizedMoney[paymentMethod] = 0;
+        }
+        categorizedMoney[paymentMethod] += parseFloat(deposit);
+  
+        // Check if deposit payment method is "كاش" and add to totalCash
+        if (paymentMethod === "كاش") {
           totalCash += parseFloat(deposit);
         }
       }
@@ -489,6 +502,48 @@ return Array.from(commissionMap.values())
               </div>
             )}
           </FieldArray>
+
+{/* اضافة العرابين */}
+
+          {/* <FieldArray name={`extraDeposits`}>
+                      {({ push: pushRestOrderCost, remove: removeRestOrderCost }) => (
+                        <div className="flex flex-col gap-4 items-center w-full ">
+                          {values.extraDeposits.map((_, restIndex) => (
+                            <div key={restIndex} className="flex flex-row-reverse flex-wrap  gap-10 items-center w-[80%] justify-center pt-8 pb-6 rounded-md  bg-gray-200 ">
+                              <CustomInput
+                                name={`extraDeposits[${restIndex}].order`}
+                                label="المبلغ المتبقي"
+                                type={"number"}
+                             
+                              />
+                              <CustomInput
+                                name={`extraDeposits[${restIndex}].deposit`}
+                                label="المبلغ المتبقي"
+                                type={"number"}
+                             
+                              />
+                              <Field
+                                name={`extraDeposits[${restIndex}].paymentMethod`}
+                                as="select"
+                                className="border-2 border-black rounded-lg p-2"
+                              >
+                                <option value="">طريقة دفع الباقي</option>
+                           
+          <option value="كاش">كاش</option> 
+          <option value="تحويل بنك أهلي">تحويل بنك أهلي</option>
+          <option value="تحويل بنك راجحي">تحويل بنك راجحي</option>
+          <option value="supervisor">رقمي</option>
+                              </Field>
+
+                              <Button onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
+                            </div>
+                          ))}
+                          <Button type="button" onClick={() => pushRestOrderCost(depositOrder)}>
+                            إضافة مبلغ متبقي
+                          </Button>
+                        </div>
+                      )}
+                    </FieldArray> */}
 
 
 

@@ -114,7 +114,7 @@ export function ReportsFilter({filterChange}) {
             id={`a`} // Unique ID for each radio
             name="supervisorFilter" // Ensure all radios belong to the same group
             className="size-5 rounded-sm border-gray-300"
-            onChange={() => filterChange("status", "approved")}
+            onChange={() => filterChange("status", "مكتمل بنجاح")}
           />
 
           <span className="text-sm font-medium text-gray-700">
@@ -129,12 +129,26 @@ export function ReportsFilter({filterChange}) {
             id={`a`} // Unique ID for each radio
             name="supervisorFilter" // Ensure all radios belong to the same group
             className="size-5 rounded-sm border-gray-300"
-            onChange={() => filterChange("status", "pending")}
+            onChange={() => filterChange("status", "معلق")}
           />
 
           <span className="text-sm font-medium text-gray-700">
             لم يتم الموافقه عليه بعد
           </span>
+        </label>
+      </li>
+          <li >
+        <label className="inline-flex items-center gap-2">
+          <input
+            type="radio"
+            id={`a`} // Unique ID for each radio
+            name="supervisorFilter" // Ensure all radios belong to the same group
+            className="size-5 rounded-sm border-gray-300"
+            onChange={() => filterChange("status", "قيد المطابقه")}
+          />
+
+          <span className="text-sm font-medium text-gray-700">
+قيد المطابقة          </span>
         </label>
       </li>
 </ul>

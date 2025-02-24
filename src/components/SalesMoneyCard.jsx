@@ -3,13 +3,20 @@ import { Button } from './ui/button'
 import moneyImg from '../assets/cash.png'
 import { useMutation } from '@tanstack/react-query'
 import { verifyCash } from '@/api/orders'
+import { Loader2 } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { useQueryClient } from '@tanstack/react-query'
 
 const SalesMoneyCard = ({amount ,user ,id}) => {
+  const queryClient = useQueryClient()
 const mutation =useMutation({
     mutationKey:"cash",
     mutationFn:()=>verifyCash(id),
     onSuccess:(res)=>{
         console.log(res)
+        toast.success("تم تأكيد العمولة بنجاح")
+        queryClient.invalidateQueries("cash")
+
     }
 })
 
@@ -32,9 +39,11 @@ const mutation =useMutation({
     <div className="flex flex-col-reverse lg:flex-row items-center gap-3">
       <Button
       onClick={mutation.mutate} 
+      disabled={mutation.isPending}
         className="bg-[#1e3d52] transition-all gradient text-[15px] text-white px-3 py-[6px] rounded-full flex items-center gap-1"
       >
-        تأكيد استلام العمولة
+        {mutation.isPending ? <Loader2 className='animate-spin' /> : "تأكيد استلام العمولة"}
+        
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

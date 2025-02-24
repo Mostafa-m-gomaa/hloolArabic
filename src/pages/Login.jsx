@@ -58,8 +58,14 @@ const Login = () => {
 
   useEffect(()=>{
 const token = localStorage.getItem("token")
+const role = localStorage.getItem("role")
 if(token){
-  history("/home")
+  if(role === "admin" || role === "manager" || role === "validator"){
+    history("/home")
+  }
+  else if(role === "sales" || role === "supervisor" ){
+    history("/home/salesHome")
+  }
 }
   },[])
   return (

@@ -21,6 +21,7 @@ export const productValidation =Yup.object({
     price: Yup.number().required("يجب أن تدخل السعر") ,
     salesManCommission: Yup.number().required("يجب أن تدخل عمولة المندوب") ,
     supervisorCommission: Yup.number().required("يجب أن تدخل عمولة المشرف") ,
+    deliveryCommission: Yup.number().required("يجب أن تدخل عمولة رجل التوصيل") ,
 })
 export const addOrderValidation =Yup.object({
     customerName: Yup.string().required("يجب أن تدخل اسم العميل") ,
@@ -36,12 +37,10 @@ export const addOrderValidation =Yup.object({
     country: Yup.string().required("يجب أن تدخل البلد") ,
     quantity: Yup.number().required("يجب أن تدخل الكمية") ,
     deposit: Yup.number().required("يجب أن تدخل الدفعة المقدمة") ,
-    supervisorCommission: Yup.number().required("يجب أن تدخل عمولة المشرف") ,
-    salesManCommission: Yup.number().required("يجب أن تدخل عمولة المندوب") ,
     product: Yup.string().required("يجب أن تختار المنتج") ,
     notes: Yup.string() ,
     deliveryMan: Yup.string().required("يجب أن تختار رجل التوصيل") ,
-    deliveryCommission: Yup.number().typeError("يجب أن يكون مبلغًا صالحًا").required("يجب أن تدخل عمولة رجل التوصيل") ,
+
 })
 
 export const addReportValidationSchema = Yup.object().shape({

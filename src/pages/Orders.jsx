@@ -45,6 +45,7 @@ const [filters,setFilters]= useState({
   sellingDate:"",
   supervisor:"",
   supervisorCommission:"",
+  daysAgo:"",
 })
 
 const handleFilterChange = (key, value) => {
@@ -111,33 +112,37 @@ const exportToExcel = () => {
   setLoader(true)
   const worksheetData = orderItems.map((item) => ({
     "المنتج": item?.product || "N/A",
+    "اسم العميل": item?.customerName || "N/A",
+    "رقم سند العربون": item?.receipt || "N/A",
+    "الجنس": item?.gender || "N/A",
+    "المتبقي علي انتهاء المنتج": item?.expireAfter || "N/A",
+    "تاريخ الميلاد العميل": formatDate(item?.birthDate),
+    "اسم المشرف": item?.supervisor?.name || "N/A",
+    "اسم المندوب": item?.salesPerson?.name || "N/A",
+    "تاريخ البيع": formatDate(item?.sellingDate),
+    "الكمية": item?.quantity || "N/A",
     "سعر المنتج": item?.productPrice || "N/A",
     "سعر الطلبية": item?.orderPrice || "N/A",
-    "البلد": item?.country || "N/A",
-    "تاريخ الإنشاء": formatDate(item?.createdAt),
-    "تاريخ الميلاد": formatDate(item?.birthDate),
-    "اسم العميل": item?.customerName || "N/A",
-    "تاريخ التوصيل": formatDate(item?.deliveryDate),
-    "حالة التوصيل": item?.deliveryStatus || "N/A",
-    "اصدار البطاقة": item?.productIssuanceDate ? formatDate(item.productIssuanceDate) : "لا يوجد",
+    "العربون": item?.deposit || "N/A",
+    "طريقة دفع العربون": item?.depositPaymentMethod || "N/A",
+    "المتبقي منذ دفع العربون": item?.daysAgo || "N/A",
+    "المبلغ المتبقي للطلب": item?.remainingAmount || "N/A",
+    "مسئول التوصيل": item?.deliveryMan?.name || "N/A",
+    "تاريخ التسليم": formatDate(item?.deliveryDate),
     "سند التسليم": item?.DeliveryReceipt || "N/A",
-    "الدفعة المقدمة": item?.deposit || "N/A",
-    "طريقة دفع الدفعة المقدمة": item?.depositPaymentMethod || "N/A",
-    "طريقة دفع الدفعة الباقي": item?.restMoneyPaymentMethod || "N/A",
-    "ملاحظات": item?.notes || "N/A",
-    "الكمية": item?.quantity || "N/A",
-    "اسم المندوب": item?.salesPerson?.name || "N/A",
-    "عمولة المندوب": item?.salesManCommission || "N/A",
-    "تاريخ البيع": formatDate(item?.sellingDate),
-    "المشرف": item?.supervisor?.name || "N/A",
+    "اصدار البطاقة": item?.productIssuanceDate ? formatDate(item.productIssuanceDate) : "لا يوجد",
+    "طريقة دفع الدفعه الباقي": item?.restMoneyPaymentMethod || "N/A",
     "عمولة المشرف": item?.supervisorCommission || "N/A",
+    "عمولة المندوب": item?.salesManCommission || "N/A",
+    "عمولة التوصيل": item?.deliveryCommission || "N/A",
+    "حالة التوصيل": item?.deliveryStatus || "N/A",
+    "البلد": item?.country || "N/A",
+    "ملاحظات": item?.notes || "N/A",
     "تاريخ التحديث": formatDate(item?.updatedAt),
     "رقم الهاتف": item?.phone || "N/A",
-    "فترة السماح": item?.ValidityPeriod || "N/A",
-    "ينتهي بعد": item?.expireAfter || "N/A",
-    "الجنس": item?.gender || "N/A",
     "رقم الطلب": item?.orderNumber || "N/A",
-    "تاريخ انتهاء المنتج": formatDate(item?.productEndDate),
+    "تاريخ الانشاء": formatDate(item?.createdAt),
+    "تاريخ انتهاء المنتج": formatDate(item?.productEndDate) || "N/A",
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(worksheetData);
@@ -159,11 +164,11 @@ const exportToExcel = () => {
         <div className="flex justify-between w-full items-center">
 
           <Button onClick={exportToExcel}>{loader ?<LoaderPinwheel className='animate-spin' /> : <Download /> }</Button>
-          <h1>الطلبات</h1>
+          <h1>القالب الرئيسي</h1>
         </div>
         <OrdersFilter filterChange={handleFilterChange} />
             
-             <TabsDemo filterChang={handleFilterChange}  setDeliveryStatus={setDeliveryStatus}/>
+             <TabsDemo categorizedOrders={orders?.categorizedOrders} filterChang={handleFilterChange}  setDeliveryStatus={setDeliveryStatus}/>
 
       </div>
           {isLoading ? <Loader />:  <OrdersTable orders={orderItems} />}

@@ -46,11 +46,8 @@ const initialValues={
     depositPaymentMethod:"",
     deliveryDate:"",
     restMoneyPaymentMethod:"",
-    supervisorCommission:"",
-    salesManCommission:"",
     notes:"",
     deliveryMan:"",
-    deliveryCommission:""
 
 }
 
@@ -86,8 +83,7 @@ const onSubmit=(values)=>{
                 <Custom label="البلد" name="country" err={errors.country}  />
                 <Custom label="الكمية" name="quantity" err={errors.quantity}  />
                 <Custom label="الدفعه المقدمة" name="deposit" err={errors.deposit}  />
-                <Custom label="عمولة المشرف" name="supervisorCommission" err={errors.supervisorCommission}  />
-                <Custom label="عمولة المندوب" name="salesManCommission" err={errors.salesManCommission}  />
+           
                 <Custom label="ملاحظات" name="notes" err={errors.notes}  />
                 <div className="flex flex-col gap-4">
         <Field as="select" name="gender" className="w-full border-2 border-black rounded-lg p-2">
@@ -104,14 +100,13 @@ const onSubmit=(values)=>{
           {superVisorsItems.map((item , index)=><option value={item._id}>{item.name}</option> )}
 
         </Field>
-        <Field as="select" name="deliveryMan" className="w-full border-2 border-black rounded-lg p-2">
+        <Field as="select" name="deliveryMan" className="w-full border-2 border-black rounded-lg p-2 mb-6">
           <option value="">اختر رجل التوصيل</option>
 
           {superVisorsItems.map((item , index)=><option value={item._id}>{item.name}</option> )}
 
         </Field>
         {touched.deliveryMan && errors.deliveryMan && <div className="text-red-500">{errors.deliveryMan}</div>}
-        <Custom label="عمولة رجل التوصيل" name="deliveryCommission" err={errors.deliveryCommission}  />
         <Field as="select" name="product" className="w-full border-2 border-black rounded-lg p-2">
           <option value="">اختر المنتج</option>
           {productsItems.map((item , index)=><option value={item._id}>{item.title}</option> )}
