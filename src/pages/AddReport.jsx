@@ -151,7 +151,6 @@ const newOrdersObj = {
     fuelCost: "50", 
     description: "",
     companyDues: cash,
-    extraDeposits: [depositOrder],
   };
 
   
@@ -292,20 +291,7 @@ return Array.from(commissionMap.values())
         }
       }
     });
-    values.extraDeposits.forEach(({ deposit, paymentMethod }) => {
-      if (deposit && paymentMethod) {
-        if (!categorizedMoney[paymentMethod]) {
-          categorizedMoney[paymentMethod] = 0;
-        }
-        categorizedMoney[paymentMethod] += parseFloat(deposit);
-  
-        // Check if deposit payment method is "كاش" and add to totalCash
-        if (paymentMethod === "كاش") {
-          totalCash += parseFloat(deposit);
-        }
-      }
-    });
-  
+
     // Update the cash state
     setCash(totalCash);
   
