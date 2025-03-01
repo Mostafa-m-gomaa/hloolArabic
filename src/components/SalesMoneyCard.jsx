@@ -10,12 +10,18 @@ import { useQueryClient } from '@tanstack/react-query'
 const SalesMoneyCard = ({amount ,user ,id}) => {
   const queryClient = useQueryClient()
 const mutation =useMutation({
-    mutationKey:"cash",
     mutationFn:()=>verifyCash(id),
     onSuccess:(res)=>{
         console.log(res)
-        toast.success("تم تأكيد العمولة بنجاح")
-        queryClient.invalidateQueries("cash")
+        if(res.status === "fail"){
+            toast.error("حدث خطأ ما")
+        }
+        else {
+
+          toast.success("تم تأكيد العمولة بنجاح")
+          queryClient.invalidateQueries("myCash")
+          queryClient.invalidateQueries("myDues")
+        }
 
     }
 })

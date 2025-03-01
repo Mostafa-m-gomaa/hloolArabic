@@ -40,6 +40,7 @@ const initialValues={
     sellingDate:"",
     phone:"",
     country:"",
+    city:"",
     product:"",
     quantity:"",
     deposit:"",
@@ -80,7 +81,8 @@ const onSubmit=(values)=>{
                 <Custom label="تاريخ البيع" name="sellingDate" err={errors.sellingDate}  />
                 <Custom label="تاريخ التسليم" name="deliveryDate" err={errors.deliveryDate}  />
                 <Custom label="رقم الهاتف" name="phone" err={errors.phone}  />
-                <Custom label="البلد" name="country" err={errors.country}  />
+                <Custom label="المنطقة" name="country" err={errors.country}  />
+                <Custom label="المدينة" name="city" err={errors.city}  />
                 <Custom label="الكمية" name="quantity" err={errors.quantity}  />
                 <Custom label="الدفعه المقدمة" name="deposit" err={errors.deposit}  />
            

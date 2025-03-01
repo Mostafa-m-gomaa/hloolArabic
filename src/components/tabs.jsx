@@ -45,6 +45,7 @@ import {
 import { BookCheck, Ban, MailCheck, Rss } from "lucide-react"; 
 import { LoaderPinwheel } from 'lucide-react';
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function TabsDemo({ setDeliveryStatus, filterChang, categorizedOrders }) {
   const data = Object.entries(categorizedOrders || {}); // Prevents crashing if undefined/null
@@ -69,12 +70,12 @@ export function TabsDemo({ setDeliveryStatus, filterChang, categorizedOrders }) 
         <TabsTrigger onClick={() => filterChang("deliveryStatus", "ملغي")} value="ملغي">
         <Ban color="#db0000" /><span className="text-[12px] lg:text-[15px]">الملغي</span>
         </TabsTrigger>
-        <TabsTrigger onClick={() => filterChang("daysAgo", "45")} value="45">
+        <Link to="/home/undelivered45">
         <div className="text-[30px]">45</div><span className="text-[12px] lg:text-[15px]">45 يوم</span>
-        </TabsTrigger>
-        <TabsTrigger onClick={() => filterChang("daysAgo", "60")} value="65">
+        </Link>
+        <Link to="/home/undelivered60">
         <div className="text-[30px]">60</div><span className="text-[12px] lg:text-[15px]">60 يوم</span>
-        </TabsTrigger>
+        </Link>
       </TabsList>
 
       <div className="flex justify-center gap-4 bg-white p-4 rounded-md shadow-lg my-2">

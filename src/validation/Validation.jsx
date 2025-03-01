@@ -35,6 +35,7 @@ export const addOrderValidation =Yup.object({
     deliveryDate: Yup.string().required("يجب أن تدخل تاريخ التسليم") ,
     phone: Yup.string().required("يجب أن تدخل رقم الهاتف") ,
     country: Yup.string().required("يجب أن تدخل البلد") ,
+    city: Yup.string().required("يجب أن تدخل البلد") ,
     quantity: Yup.number().required("يجب أن تدخل الكمية") ,
     deposit: Yup.number().required("يجب أن تدخل الدفعة المقدمة") ,
     product: Yup.string().required("يجب أن تختار المنتج") ,

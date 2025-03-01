@@ -9,6 +9,14 @@ export const getOrders = (params = {} , page) => {
     const url = queryString ? `/orders?page=${page}&&${queryString}` : `/orders?page=${page}`;
     return fetchClient(url);
   };
+export const getUndeliveredOrders = (params = {} , page) => {
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value) // Remove empty values
+    );
+    const queryString = new URLSearchParams(filteredParams).toString();
+    const url = queryString ? `/orders/unDelivered&&${queryString}` : `/orders/unDelivered`;
+    return fetchClient(url);
+  };
 
 
 export const getMyOrders = (params = {} , page) => {
@@ -151,4 +159,15 @@ export const getMyReports = (params = {} , page) => {
         method:"PATCH",
         body:JSON.stringify(params)
     })
+  }
+
+
+  export const getUsersDues =()=>{
+    return fetchClient(`/user-dues`)
+  }
+  export const getMineDues =()=>{
+    return fetchClient(`/user-dues/mine`)
+  }
+  export const getDuesOverMe =()=>{
+    return fetchClient(`/company-dues/mine`)
   }

@@ -258,7 +258,8 @@ export function OrdersFilter({filterChange}) {
 
 
 <InputSearch title="مده الصلاحية" searchFunc={filterChange} type={"ValidityPeriod"} />
-<InputSearch title="البلد" searchFunc={filterChange} type={"country"} />
+<InputSearch title="المنطقة" searchFunc={filterChange} type={"country"} />
+<InputSearch title="المدينة" searchFunc={filterChange} type={"city"} />
 <InputSearch title="اسم العميل" searchFunc={filterChange} type={"customerName"} />
 <InputSearch title="عمولة التوصيل" searchFunc={filterChange} type={"deliveryCommission"} />
 <InputSearch title="رقم الطلب" searchFunc={filterChange} type={"orderNumber"} />

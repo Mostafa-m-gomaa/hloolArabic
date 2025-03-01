@@ -70,7 +70,8 @@ export function OrdersTable({orders}) {
           <TableHead className="">عمولة المندوب</TableHead>
           <TableHead className ="">عمولة التوصيل</TableHead>
           <TableHead className="">حالة التوصيل</TableHead>
-          <TableHead className="">البلد</TableHead>
+          <TableHead className="">المنطة</TableHead>
+          <TableHead className="">المدينة</TableHead>
           <TableHead className="">ملاحظات</TableHead>
           <TableHead className="">تاريخ التحديث</TableHead>
           <TableHead className="">رقم الهاتف</TableHead>
@@ -111,6 +112,7 @@ export function OrdersTable({orders}) {
         <TableCell>{item?.deliveryCommission || "N/A"}</TableCell>
         <TableCell>{item?.deliveryStatus || "N/A"}</TableCell>
         <TableCell>{item?.country || "N/A"}</TableCell>
+        <TableCell>{item?.city || "N/A"}</TableCell>
         <TableCell>{item?.notes || "N/A"}</TableCell>
         <TableCell>{formatDate(item?.updatedAt)}</TableCell>
         <TableCell>{item?.phone || "N/A"}</TableCell>

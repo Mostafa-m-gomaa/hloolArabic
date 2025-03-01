@@ -52,18 +52,20 @@ import Loader from "./Loader"
             <TableHead className="">السعر</TableHead>
             <TableHead className="">عمولة المشرف</TableHead>
             <TableHead className="">عمولة المندوب</TableHead>
+            <TableHead className="">عمولة التوصيل</TableHead>
             <TableHead className="">نشط</TableHead>
           </TableRow>
           </TableHeader>
           {theProducts.length > 0 ?         <TableBody>
 
-{theProducts.map((item ,index) => (
+{theProducts?.map((item ,index) => (
   <TableRow key={index} className="text-[14px] lg:text-[18px]">
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item.title} </TableCell>
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item.desc}</TableCell>
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item.price}</TableCell>
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item.supervisorCommission}</TableCell>
-    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item.salesManCommission}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.title} </TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.desc}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.price}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.supervisorCommission}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.salesManCommission}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.deliveryCommission || "لا يوجد"}</TableCell>
     <TableCell className="max-w-[15%]  border-gray-400 overflow-hidden" >{item.active ? <div className="bg-green-700 text-white px-2">active </div> : <div className="bg-red-600 text-white px-2">un active </div>}</TableCell>
     <TableCell  >
       <DropdownMenu>

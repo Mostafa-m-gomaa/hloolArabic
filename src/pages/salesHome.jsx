@@ -5,21 +5,40 @@ import MyChart from '@/components/MyChart';
 import AreaChartComponent from '@/components/AreaChartFillByValue';
 import CustomBarChart from '@/components/CustomBarChart';
 import Orders from './Orders';
-import { useQuery } from '@tanstack/react-query';
-import { cashVerify } from '@/api/orders';
+import { useQuery  , useQueryClient} from '@tanstack/react-query';
+import { cashVerify, getDuesOverMe, getMineDues } from '@/api/orders';
 import { Coins } from 'lucide-react';
 import SalesMoneyCard from '@/components/SalesMoneyCard';
+import { DollarSign } from 'lucide-react';
+
 
 const SalesHome = () => {
+const queryClient = useQueryClient()
 
-
-    const {data : myCash}=useQuery({
-        queryKey:["cash"],
-        queryFn: cashVerify
+    const {data : myCash , isLoading :myCashLoadin , isError : myCahError}=useQuery({
+        queryKey:["myCash"],
+        queryFn: cashVerify ,
     })
+    const {data : myDues ,  isFetching: myDuesFetching,  isLoading : myDuesLoading , isError : myDuesError , refetch   }=useQuery({
+        queryKey:["myDues"],
+        queryFn: getMineDues,
+        retry: 3,
+     
+    })
+    const amount = (myDues?.data || [])
+    .filter(item => typeof item.dues === "number") // Ensure it's a number
+    .map(item => item.dues)
+    .reduce((a, b) => a + b, 0);
 
+
+    const {data : duesOverMe}=useQuery({
+      queryKey :["duesForCompany"],
+      queryFn:getDuesOverMe
+    })
 const cashItems = myCash?.data || []
-    console.log(myCash)
+
+ 
+
   return (
     <div className="flex flex-col py-8 gap-4">
         <h1 className='bg-white p-4 rounded-md '>لوحة القيادة</h1>
@@ -51,6 +70,9 @@ const cashItems = myCash?.data || []
 
             <HomeCard icon ={<Users/>} number={51} title="طلباتك التي تم تجهيزها" subTitle="المجموع الاسبوعي" color={"bg-[#012af9]"} />
             <HomeCard icon ={<Users/>} number={15} title="طلباتك المسلمة" subTitle="المجموع الاسبوعي" color={"bg-[#d73364]"} />
+            <HomeCard icon ={<DollarSign />} number={amount} title="اموالك" subTitle="المحفظة" color={"bg-[#f5b951]"} /> 
+            {localStorage.getItem("role") === "supervisor" &&     <HomeCard icon ={<DollarSign />} number={duesOverMe?.dues} title="اموال عليك" subTitle="المحفظة" color={"bg-[#f5b951]"} />}
+        
 
 
     </div>

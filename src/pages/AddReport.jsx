@@ -8,7 +8,7 @@ import Custom from "@/formik/CustomInput";
 import { addReportValidationSchema } from "@/validation/Validation";
 import { DialogDemo } from "@/components/MyOrdersDialog";
 import { useState } from "react";
-import { createReport } from "@/api/orders";
+import { createReport, getDuesOverMe, getUsersDues } from "@/api/orders";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -46,6 +46,14 @@ const CreateReport = () => {
   })
 
   const productItems = products?.data
+
+  const {data : duesOverMe}=useQuery({
+    queryKey:["dues×OverMe"] ,
+    queryFn: getDuesOverMe
+  })
+
+  // console.log(duesOverMe)
+  const cashWithMe = duesOverMe?.dues || 0
 
 
 
@@ -117,10 +125,22 @@ const mutation =useMutation({
   }
 })
 
+const {data : usersDues , isLoading : usersDuesLoading} = useQuery({
+  queryKey : ["usersDues"] ,
+  queryFn : getUsersDues
+})
+
+const usersDuesItems = usersDues?.data || []
+console.log(usersDues)
+
 
 
 const restMoneyObj={amount: "",paymentMethod: "",}
 const depositOrder={order: "",paymentMethod: "", deposit: "",}
+const userDuesObj={
+  userDuesDocId : "" ,
+  gottenMoney : "",
+}
 const burnOutsObj = {
   description : "",
   amount : "",
@@ -150,7 +170,9 @@ const newOrdersObj = {
     burnOuts : [burnOutsObj],
     fuelCost: "50", 
     description: "",
-    companyDues: cash,
+    companyDues: cash + cashWithMe,
+    extraDeposits: [depositOrder],
+    userDues : [userDuesObj],
   };
 
   
@@ -171,8 +193,8 @@ const newOrdersObj = {
       else{
         values.outgoings = outgoings;
         values.categorizedMoney = categorizedMoney;
-        values.companyDues = cash;
-        // console.log(values);
+        values.companyDues = cash + cashWithMe;
+        console.log(values);
         mutation.mutate(values);
    
       }
@@ -291,7 +313,20 @@ return Array.from(commissionMap.values())
         }
       }
     });
-
+    values.extraDeposits.forEach(({ deposit, paymentMethod }) => {
+      if (deposit && paymentMethod) {
+        if (!categorizedMoney[paymentMethod]) {
+          categorizedMoney[paymentMethod] = 0;
+        }
+        categorizedMoney[paymentMethod] += parseFloat(deposit);
+  
+        // Check if deposit payment method is "كاش" and add to totalCash
+        if (paymentMethod === "كاش") {
+          totalCash += parseFloat(deposit);
+        }
+      }
+    });
+  
     // Update the cash state
     setCash(totalCash);
   
@@ -381,7 +416,7 @@ return Array.from(commissionMap.values())
                     ))}
                     </Field>
                  
-                    <Button onClick={() => remove(index)}>حذف</Button>
+                    <Button type="button" onClick={() => remove(index)}>حذف</Button>
                   </div>
                 ))}
                 <Button type="button" onClick={() => push(newOrdersObj)}>
@@ -394,12 +429,12 @@ return Array.from(commissionMap.values())
 
           <FieldArray name="deliveredOrders">
             {({ push, remove }) => (
-             <div className="flex flex-col justify-center gap-10 items-center  w-full ">
+             <div className="flex flex-col justify-center gap-10 items-center  w-full">
                 {values.deliveredOrders.map((_, index) => (
-                <div key={index} className=" border-b py-10 px-4 w-[90%] bg-white rounded-md shadow-2xl flex flex-col lg:flex-row  justify-center gap-10 items-center border-2 flex-wrap ">
+                <div key={index} className="border-b py-10 px-4 w-[90%] bg-white rounded-md shadow-2xl flex flex-col lg:flex-row  justify-center gap-10 items-center border-2 flex-wrap ">
                         <DialogDemo
                         setOrder={(order) => {
-                          setRestCash(order?.orderPrice - order?.deposit);
+                          setRestCash(order?.remainingAmount || 0);
                           setUsersCommission([...usersCommission, {salesManName: order?.salesPerson?.name ,saledManId : order?.salesPerson?._id, salesManComm: order.salesManCommission ,supervisorName: order?.supervisor?.name ,superVisorId : order?.supervisor?._id, superVisorComm: order?.supervisorCommission , deliveryCommisssion : order?.deliveryCommission ? order?.deliveryCommission : 0 , deliveryManName : order?.deliveryMan?.name , deliveryManId : order?.deliveryMan?._id }])  ;
 
                       
@@ -408,15 +443,14 @@ return Array.from(commissionMap.values())
                           ];
                           updatedDeliveredOrders[index] = {
                             ...updatedDeliveredOrders[index],
-                            customerName: order.customerName || "",
-                            deliveryReceipt: order.DeliveryReceipt || "",
+                            customerName: order.customerName || "" ,
+                            deliveryReceipt: order.DeliveryReceipt || "" ,
                             order: order._id || "",
                             deservedSalesManCommission:
                               order.salesManCommission || "",
                               deservedSupervisorCommission: order.supervisorCommission || "",
                               deliveryReceipt : order.deliveryReceipt || "",
                             deliveryCommission: order.deliveryCommission || "",
-                       
                           };
                           setFieldValue(
                             "deliveredOrders",
@@ -468,7 +502,7 @@ return Array.from(commissionMap.values())
           <option value="supervisor">رقمي</option>
                               </Field>
 
-                              <Button onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
+                              <Button type="button" onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
                             </div>
                           ))}
                           <Button type="button" onClick={() => pushRestOrderCost(restMoneyObj)}>
@@ -479,7 +513,7 @@ return Array.from(commissionMap.values())
                     </FieldArray>
                     
                    
-                    <Button onClick={() => remove(index)}>حذف</Button>
+                    <Button type="button" onClick={() => remove(index)}>حذف</Button>
                   </div>
                 ))}
                 <Button type="button" onClick={() => push(deliveredOrdersObj)}>
@@ -489,22 +523,30 @@ return Array.from(commissionMap.values())
             )}
           </FieldArray>
 
-{/* اضافة العرابين */}
-
-          {/* <FieldArray name={`extraDeposits`}>
+{/* extra deposites section  */}
+<h1>اضافة عرابين</h1>
+          <FieldArray name={`extraDeposits`}>
                       {({ push: pushRestOrderCost, remove: removeRestOrderCost }) => (
-                        <div className="flex flex-col gap-4 items-center w-full ">
+                        <div className="flex flex-col gap-4 items-center mx-auto bg-white p-4 w-[90%] rounded-md shadow-2xl ">
                           {values.extraDeposits.map((_, restIndex) => (
                             <div key={restIndex} className="flex flex-row-reverse flex-wrap  gap-10 items-center w-[80%] justify-center pt-8 pb-6 rounded-md  bg-gray-200 ">
-                              <CustomInput
-                                name={`extraDeposits[${restIndex}].order`}
-                                label="المبلغ المتبقي"
-                                type={"number"}
-                             
-                              />
+                          <DialogDemo
+                        setOrder={(order) => {        
+                          const updatedDeliveredOrders = [
+                            ...values.extraDeposits,
+                          ];
+                          updatedDeliveredOrders[restIndex] = {
+                            ...updatedDeliveredOrders[restIndex],
+                            order: order._id || "", };
+                          setFieldValue(
+                            "extraDeposits",
+                            updatedDeliveredOrders
+                          );
+                        }}
+                      />
                               <CustomInput
                                 name={`extraDeposits[${restIndex}].deposit`}
-                                label="المبلغ المتبقي"
+                                label="المبلغ "
                                 type={"number"}
                              
                               />
@@ -513,7 +555,7 @@ return Array.from(commissionMap.values())
                                 as="select"
                                 className="border-2 border-black rounded-lg p-2"
                               >
-                                <option value="">طريقة دفع الباقي</option>
+                                <option value="">طريقة الدفع</option>
                            
           <option value="كاش">كاش</option> 
           <option value="تحويل بنك أهلي">تحويل بنك أهلي</option>
@@ -521,7 +563,7 @@ return Array.from(commissionMap.values())
           <option value="supervisor">رقمي</option>
                               </Field>
 
-                              <Button onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
+                              <Button type="button" onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
                             </div>
                           ))}
                           <Button type="button" onClick={() => pushRestOrderCost(depositOrder)}>
@@ -529,7 +571,7 @@ return Array.from(commissionMap.values())
                           </Button>
                         </div>
                       )}
-                    </FieldArray> */}
+                    </FieldArray>
 
 
 
@@ -537,7 +579,9 @@ return Array.from(commissionMap.values())
     {commessions.length > 0 ? (
       <div className="flex flex-col border-2 border-black p-4 rounded-md gap-2 w-full">
         <h2>العمولات المستحقة</h2>
-        <div>{cash} لديك من النقد :</div>
+        <div>{cash + cashWithMe} لديك من النقد :</div>
+        <div>{cashWithMe} السابقين</div>
+        <div>{cash} النقد لهذا التقرير</div>
         {commessions.map((item, i) =>
           item.userId === undefined ? null : (
             <div className="flex gap-2 w-full justify-between" key={i}>
@@ -564,6 +608,52 @@ return Array.from(commissionMap.values())
 
     <CustomInput type={"text"} name="description" label="الوصف" />
   </div>
+
+{/* userDuseSection  */}
+<h1>مستحقات قديمة </h1>
+  <FieldArray name={`userDues`}>
+                      {({ push: pushRestOrderCost, remove: removeRestOrderCost }) => (
+                        <div className="flex flex-col gap-4 items-center mx-auto bg-white p-4 w-[90%] rounded-md shadow-2xl ">
+                          {values.userDues.map((due, restIndex) => (
+                            <div key={restIndex} className="flex flex-row-reverse flex-wrap  gap-10 items-center w-[80%] justify-center pt-8 pb-6 rounded-md  bg-gray-200 ">
+                       <Field
+                                name={`userDues[${restIndex}].userDuesDocId`}
+                                as="select"
+                                className="border-2 border-black rounded-lg p-2"
+                              >
+                                <option value="">{usersDuesItems.length > 0  ? "اختر المستخدم": "لا يوجد مستحقات قديمة"}</option>
+                           
+         {usersDuesItems.length > 0 &&
+         usersDuesItems?.map((item,index)=>(
+            <option key={index} value={item._id}>{item?.user?.name} :{item ?.dues} </option>
+         ))
+         }
+                              </Field>
+                              <Field
+                                name={`userDues[${restIndex}].gottenMoney`}
+                                label="المبلغ "
+                                type={"number"}
+                                value={due?.gottenMoney || ""}
+                                 className="border-2 border-black rounded-lg p-2"
+                                onChange={(e) => {
+                                  const prevValue = values?.userDues?.[restIndex]?.gottenMoney || 0;
+                                  const newValue = e.target.value;
+                                  handleAmountChange(restIndex, newValue, prevValue);
+                                  setFieldValue(`userDues[${restIndex}].gottenMoney`, newValue);
+                                }}
+                             
+                              />
+                         
+
+                              <Button type="button" onClick={() => removeRestOrderCost(restIndex)}>حذف</Button>
+                            </div>
+                          ))}
+                          <Button type="button" onClick={() => pushRestOrderCost(userDuesObj)}>
+                            إضافة 
+                                                      </Button>
+                        </div>
+                      )}
+                    </FieldArray>
 
   <h1 className="font-semibold">المصاريف</h1>
 
@@ -600,7 +690,7 @@ return Array.from(commissionMap.values())
           />
 
        
-          <Button onClick={() => remove(index)}>حذف</Button>
+          <Button type="button" onClick={() => remove(index)}>حذف</Button>
         </div>
       ))}
       <Button type="button" onClick={() => push(burnOutsObj)}>
