@@ -32,7 +32,7 @@ const Products = () => {
   })
   
   const productItems = products?.data || []
-  console.log(products)
+
 
 
   const onSearchChange = (value) => {

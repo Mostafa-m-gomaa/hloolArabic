@@ -38,7 +38,7 @@ export function PayDues({id}) {
 
 
     const onSubmit =(values)=>{
-   console.log(values)
+  
         mutation.mutate({mutationId : id ,values})
     }
   return (

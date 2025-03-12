@@ -10,7 +10,7 @@ export const getProducts =(page ,params={})=>{
         Object.entries(params).filter(([_, value]) => value) // Remove empty values
       );
       const queryString = new URLSearchParams(filteredParams).toString();
-      const url = queryString ? `/products?page=${page}&&${queryString}` : `/products?page=${page}`;
+      const url = queryString ? `/products?limit=250 &&page=${page}&&${queryString}` : `/products?limit=250 &&page=${page}`;
       return fetchClient(url);
 }
 export const getAvailableProducts =()=>{

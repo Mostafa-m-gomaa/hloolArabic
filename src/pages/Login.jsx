@@ -25,8 +25,7 @@ const Login = () => {
     onSuccess: (res) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['todos'] });
-      console.log(res);
-      console.log(res);
+    
       if(res.status === "fail"){
 
         toast.error(res.message)
@@ -37,6 +36,7 @@ const Login = () => {
         localStorage.setItem("name", res.user.name)  
         localStorage.setItem("role", res.user.role)  
         localStorage.setItem("email", res.user.email)  
+        localStorage.setItem("id", res.user._id)  
         if(res.user.role === "admin" || res.user.role === "manager" || res.user.role === "validator"){
           history("/home")
         }

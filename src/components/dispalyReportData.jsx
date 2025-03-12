@@ -31,7 +31,7 @@ const onProgressMutation = useMutation({
     }
 })
 
-    console.log(report)
+ 
   return (
     <div className="grid gap-6 p-6">
       {/* Report Overview */}

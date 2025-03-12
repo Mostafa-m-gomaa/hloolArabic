@@ -14,30 +14,26 @@ import { Link } from "react-router-dom"
 
 export function OrdersTable({orders}) {
   const theOrders = orders || []
-  console.log(orders)
+
 
  const role = localStorage.getItem("role")
 
-   const formatDate = (date) => {
-    if (!date) return "N/A"; // Return a default value if the date is undefined
-    const validDate = new Date(date);
-  
-    if (isNaN(validDate.getTime())) {
-      return "Invalid Date"; // Return a fallback value if the date is invalid
-    }
-  
-    const nyDate = new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/New_York",
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).format(validDate);
-  
-    return nyDate;
-  };
+ 
+ const formatDate = (date) => {
+  if (!date) return "N/A"; // Return a default value if the date is undefined
+  const validDate = new Date(date);
+
+  if (isNaN(validDate.getTime())) {
+    return "Invalid Date"; // Return a fallback value if the date is invalid
+  }
+
+  // Extract month, day, and year
+  const month = validDate.getMonth() + 1; // Months are zero-based
+  const day = validDate.getDate();
+  const year = validDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
   return (
     <div className="h-[70vh] overflow-y-auto bg-white">
 
@@ -78,6 +74,16 @@ export function OrdersTable({orders}) {
           <TableHead className ="">رقم الطلب</TableHead>
           <TableHead className="">تاريخ الانشاء</TableHead>
           <TableHead className ="">تاريخ انتهاء المنتج</TableHead>
+          <TableHead className ="">عربون اضافي 1 </TableHead>
+          <TableHead className ="">سند عربون اضافي 1</TableHead>
+          <TableHead className ="">طريقة دفع عربون اضافي 1</TableHead>
+          <TableHead className ="">عربون اضافي 2 </TableHead>
+          <TableHead className ="">سند عربون اضافي 2</TableHead>
+          <TableHead className ="">طريقة دفع عربون اضافي 2</TableHead>
+          <TableHead className ="">عربون اضافي 3 </TableHead>
+          <TableHead className ="">سند عربون اضافي 3</TableHead>
+          <TableHead className ="">طريقة دفع عربون اضافي 3</TableHead>
+          
         </TableRow>
         </TableHeader>
    
@@ -119,6 +125,28 @@ export function OrdersTable({orders}) {
         <TableCell>{item?.orderNumber || "N/A"}</TableCell>
         <TableCell>{formatDate(item?.createdAt)}</TableCell>
         <TableCell>{formatDate(item?.productEndDate) || "N/A"}</TableCell>
+        {item?.extraDeposits?.length > 0 ?
+        item?.extraDeposits?.map((item,i)=>(
+          <>
+          <TableCell>{item?.deposit || "N/A"}</TableCell>
+          <TableCell>{item?.receipt || "N/A"}</TableCell>
+          <TableCell>{item?.paymentMethod || "N/A"}</TableCell>
+          </>
+        ))
+       
+        :
+       <>
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+          <TableCell>لا يوجد</TableCell> 
+        </>
+                 }
       </TableRow>
     ))
   ) : (

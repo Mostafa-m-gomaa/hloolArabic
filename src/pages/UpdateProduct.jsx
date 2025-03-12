@@ -38,7 +38,7 @@ const mutation = useMutation({
     mutationKey:"products",
     mutationFn:({id ,values})=>updateProduct(id,values) ,
     onSuccess:(res)=>{
-        console.log(res)
+      
         if(res.status !== "error"){
 
             queryClient.invalidateQueries({queryKey:["products"]})

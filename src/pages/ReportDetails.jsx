@@ -21,7 +21,7 @@ const reportDetails = details?.report || []
 const salesOrders = details?.report?.salesMenOrders || []
 
 
-console.log(details)
+
 
   return (
     <div className="flex flex-col-reverse lg:flex-row w-full *:bg-white *:rounded-md *:p-4 *:shadow-lg justify-center gap-2 p-8">

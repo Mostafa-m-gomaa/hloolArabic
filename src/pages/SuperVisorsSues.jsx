@@ -43,7 +43,7 @@ const { data: dues , isLoading, isError} = useQuery({
   },
 });
 
-console.log(dues)
+
 
 
 if (isError) {

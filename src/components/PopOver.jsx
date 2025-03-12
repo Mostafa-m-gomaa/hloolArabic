@@ -40,7 +40,7 @@ export function PopoverDemo({id }) {
 
     const onSubmit =(values)=>{
         values.productIssuanceDate = new Date(values.productIssuanceDate).toISOString()
-   console.log(values)
+
         mutation.mutate({mutationId : id ,values})
     }
   return (

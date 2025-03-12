@@ -13,7 +13,7 @@ export const getUsers =(parms = {} , page)=>{
         Object.entries(parms).filter(([_, value]) => value) // Remove empty values
       );
       const queryString = new URLSearchParams(filteredParams).toString();
-      const url = queryString ? `/users?page=${page}&&${queryString}` : `/users?page=${page}`;
+      const url = queryString ? `/users?limit=250 &&page=${page}&&${queryString}` : `/users?limit=250 &&page=${page}`;
       return fetchClient(url);
 }
 

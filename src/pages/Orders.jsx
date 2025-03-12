@@ -84,9 +84,8 @@ if (isError) {
   return <div>Internet Error</div>;
 }
   
-  console.log(orders)
-const orderItems = orders?.data || []
 
+const orderItems = orders?.data || []
 const formatDate = (date) => {
   if (!date) return "N/A"; // Return a default value if the date is undefined
   const validDate = new Date(date);
@@ -95,17 +94,12 @@ const formatDate = (date) => {
     return "Invalid Date"; // Return a fallback value if the date is invalid
   }
 
-  const nyDate = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).format(validDate);
+  // Extract month, day, and year
+  const month = validDate.getMonth() + 1; // Months are zero-based
+  const day = validDate.getDate();
+  const year = validDate.getFullYear();
 
-  return nyDate;
+  return `${day}/${month}/${year}`;
 };
 
 const exportToExcel = () => {

@@ -71,7 +71,7 @@ if (isError) {
   return <div>Internet Error</div>;
 }
   
-  console.log(orders)
+
 
 
   

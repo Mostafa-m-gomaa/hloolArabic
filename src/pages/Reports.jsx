@@ -54,7 +54,7 @@ if (isError) {
   
 
 const reportItems = reports?.data || []
-console.log(companyDues)
+
 
   
   return (

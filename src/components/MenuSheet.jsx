@@ -18,6 +18,7 @@ import { ClipboardMinus } from 'lucide-react';
 import { ClipboardPlus } from 'lucide-react';
 import { ArrowDownUp } from 'lucide-react';
 import { LogOut } from 'lucide-react';
+import { Crosshair } from 'lucide-react';
 
 
 
@@ -49,6 +50,7 @@ useEffect(()=>{
   if(role === "admin"){
     setMenu([
       { name: "الصفحة الرئيسية", link: "/home" , icon:<House/> },
+      { name: "التارجت", link: "/home/targets" , icon:  <Crosshair /> },
       { name: "ادارة الطلبات", link: "/home/manageOrders" , icon:<ArrowDownUp/> },
       { name: "المنتجات", link: "/home/products" , icon:<ShoppingBasket/> },
       { name: "الموظفين", link: "/home/users" , icon:<Users/> },
@@ -59,6 +61,7 @@ useEffect(()=>{
   else if(role === "manager"){
     setMenu([
       { name: "الصفحة الرئيسية", link: "/home/managersHome" , icon:<House/> },
+      { name: "التارجت", link: "/home/targets" , icon:  <Crosshair /> },
       { name: "ادارة الطلبات", link: "/home/manageOrders" , icon:<ArrowDownUp/> },
       { name: "التقارير", link: "/home/reports"},
       { name: "المستحقات علي المشرفين", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },

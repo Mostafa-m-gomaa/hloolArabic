@@ -22,7 +22,7 @@ const UpdateUser = () => {
     })
  
 
-console.log(data)
+
     const initialValues={
         name:data?.data.name,
         email:data?.data.email,

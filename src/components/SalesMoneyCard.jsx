@@ -12,7 +12,7 @@ const SalesMoneyCard = ({amount ,user ,id}) => {
 const mutation =useMutation({
     mutationFn:()=>verifyCash(id),
     onSuccess:(res)=>{
-        console.log(res)
+     
         if(res.status === "fail"){
             toast.error("حدث خطأ ما")
         }

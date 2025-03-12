@@ -47,7 +47,7 @@ if (isError) {
   
  
 const reportItems = reports?.data || []
-console.log(reportItems)
+
 
   return (
     <div className='w-[100%]  mx-auto flex flex-col gap-3'>

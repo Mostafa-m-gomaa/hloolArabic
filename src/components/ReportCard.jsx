@@ -9,26 +9,21 @@ import { Link } from 'react-router-dom';
 
 
 const ReportCard = ({item , number , ...props}) => {
-
-    const formatDate = (date) => {
-        const validDate = new Date(date);
-      
-        if (isNaN(validDate.getTime())) {
-          throw new Error("Invalid date passed to formatDate.");
-        }
-      
-        const nyDate = new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/New_York",
-          year: "numeric",
-          month: "long",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }).format(validDate);
-      
-        return nyDate;
-      };
+  const formatDate = (date) => {
+    if (!date) return "N/A"; // Return a default value if the date is undefined
+    const validDate = new Date(date);
+  
+    if (isNaN(validDate.getTime())) {
+      return "Invalid Date"; // Return a fallback value if the date is invalid
+    }
+  
+    // Extract month, day, and year
+    const month = validDate.getMonth() + 1; // Months are zero-based
+    const day = validDate.getDate();
+    const year = validDate.getFullYear();
+  
+    return `${day}/${month}/${year}`;
+  };
 
     
 

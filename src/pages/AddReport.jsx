@@ -131,12 +131,12 @@ const {data : usersDues , isLoading : usersDuesLoading} = useQuery({
 })
 
 const usersDuesItems = usersDues?.data || []
-console.log(usersDues)
+
 
 
 
 const restMoneyObj={amount: "",paymentMethod: "",}
-const depositOrder={order: "",paymentMethod: "", deposit: "",}
+const depositOrder={order: "",paymentMethod: "", deposit: "",receipt : ""}
 const userDuesObj={
   userDuesDocId : "" ,
   gottenMoney : "",
@@ -194,7 +194,7 @@ const newOrdersObj = {
         values.outgoings = outgoings;
         values.categorizedMoney = categorizedMoney;
         values.companyDues = cash + cashWithMe;
-        console.log(values);
+    
         mutation.mutate(values);
    
       }
@@ -547,6 +547,12 @@ return Array.from(commissionMap.values())
                               <CustomInput
                                 name={`extraDeposits[${restIndex}].deposit`}
                                 label="المبلغ "
+                                type={"number"}
+                             
+                              />
+                              <CustomInput
+                                name={`extraDeposits[${restIndex}].receipt`}
+                                label="  سند العربون اضافي"
                                 type={"number"}
                              
                               />

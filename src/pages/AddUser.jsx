@@ -26,7 +26,7 @@ const mutation = useMutation({
     mutationKey:"users",
     mutationFn:(values)=>CretaUser(values) ,
     onSuccess:(res)=>{
-        console.log(res)
+ 
         queryClient.invalidateQueries({queryKey:["users"]})
         toast.success("تم اضافة الموظف بنجاح")
         history("/home/users")

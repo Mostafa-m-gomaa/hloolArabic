@@ -55,7 +55,7 @@ const initialValues={
 const mutation = useMutation({
     mutationFn:(values)=>createOrder(values) ,
     onSuccess:(res)=>{
-        console.log(res)
+     
         queryClient.invalidateQueries({queryKey:["orders"]})
         toast.success("تم اضافة الطلب  بنجاح")
         history("/home/myorders")

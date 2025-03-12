@@ -6,7 +6,11 @@ export const getOrders = (params = {} , page) => {
       Object.entries(params).filter(([_, value]) => value) // Remove empty values
     );
     const queryString = new URLSearchParams(filteredParams).toString();
-    const url = queryString ? `/orders?page=${page}&&${queryString}` : `/orders?page=${page}`;
+    const url = queryString ? `/orders?limit=250 &&page=${page}&&${queryString}` : `/orders?limit=250 &&?page=${page}`;
+    return fetchClient(url);
+  };
+export const getOrdersAnalytics = (start , end) => {
+    const url =  `/orders/analytics?startDate=${start}&&endDate=${end}`;
     return fetchClient(url);
   };
 export const getUndeliveredOrders = (params = {} , page) => {
@@ -24,7 +28,7 @@ export const getMyOrders = (params = {} , page) => {
       Object.entries(params).filter(([_, value]) => value) // Remove empty values
     );
     const queryString = new URLSearchParams(filteredParams).toString();
-    const url = queryString ? `/orders/mine?page=${page}&&${queryString}` : `/orders/mine?page=${page}`;
+    const url = queryString ? `/orders/mine?limit=250 &&?page=${page}&&${queryString}` : `/orders/mine?limit=250 &&?page=${page}`;
     return fetchClient(url);
   };
 
@@ -86,7 +90,7 @@ export const getMyOrders = (params = {} , page) => {
       Object.entries(params).filter(([_, value]) => value) // Remove empty values
     );
     const queryString = new URLSearchParams(filteredParams).toString();
-    const url = queryString ? `/reports?page=${page}&&${queryString}` : `/reports?page=${page}`;
+    const url = queryString ? `/reports?limit=250 &&?page=${page}&&${queryString}` : `/reports?limit=250 &&?page=${page}`;
     return fetchClient(url);
   };
 export const getMyReports = (params = {} , page) => {
@@ -94,7 +98,7 @@ export const getMyReports = (params = {} , page) => {
       Object.entries(params).filter(([_, value]) => value) // Remove empty values
     );
     const queryString = new URLSearchParams(filteredParams).toString();
-    const url = queryString ? `/reports/mine?page=${page}&&${queryString}` : `/reports/mine?page=${page}`;
+    const url = queryString ? `/reports/mine?limit=250 &&?page=${page}&&${queryString}` : `/reports/mine?limit=250 &&?page=${page}`;
     return fetchClient(url);
   }; 
   export const createReport =(params)=>{
@@ -138,7 +142,7 @@ export const getMyReports = (params = {} , page) => {
       Object.entries(params).filter(([_, value]) => value) // Remove empty values
     );
     const queryString = new URLSearchParams(filteredParams).toString();
-    const url = queryString ? `/company-dues?page=${page}&&${queryString}` : `/company-dues?page=${page}`;
+    const url = queryString ? `/company-dues?limit=250 &&?page=${page}&&${queryString}` : `/company-dues?limit=250 &&?page=${page}`;
     return fetchClient(url);
   };
 

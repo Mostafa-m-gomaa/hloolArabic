@@ -25,7 +25,6 @@ const EditOrder = () => {
         queryFn:()=>getOneOrder(param)
     })
 
-    console.log(theOrder)
 
     const {data :superVisors} = useQuery({
         queryKey:["users"],
@@ -67,7 +66,7 @@ const initialValues={
 const mutation = useMutation({
     mutationFn:(values)=>createOrder(values) ,
     onSuccess:(res)=>{
-        console.log(res)
+     
         queryClient.invalidateQueries({queryKey:["orders"]})
         toast.success("تم اضافة الطلب  بنجاح")
         history("/home/myorders")

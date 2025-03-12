@@ -26,6 +26,7 @@ import SalesHome from './pages/salesHome';
 import SuperVisorsDues from './pages/SuperVisorsSues';
 import UndeliveredOrders from './pages/undeliveredOrders';
 import Targets from './pages/Targets';
+import AddTarget from './pages/AddTarget';
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
     <Route path="orders" element={<Orders/>} />
     <Route path="addreport" element={<CreateReport/>} />
     <Route path="supervisorsdues" element={<SuperVisorsDues/>} />
+    <Route path="addtarget" element={<AddTarget/>} />
     <Route path="undelivered45" element={<UndeliveredOrders title={"الطلبات التي مر عليها 45 يوم او اكثر"} num={1}/>} />
     <Route path="undelivered60" element={<UndeliveredOrders title={"الطلبات التي مر عليها 60 يوم او اكثر"} num={2}/>} />
     <Route path="onereport/:id" element={<ReportDetails/>} />

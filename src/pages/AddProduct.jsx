@@ -29,7 +29,7 @@ const mutation = useMutation({
     mutationKey:"users",
     mutationFn:(values)=>createProduct(values) ,
     onSuccess:(res)=>{
-        console.log(res)
+     
         queryClient.invalidateQueries({queryKey:["users"]})
         toast.success("تم اضافة المنتج بنجاح")
         history("/home/products")
