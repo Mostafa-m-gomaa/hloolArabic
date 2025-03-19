@@ -12,6 +12,7 @@ import SalesMoneyCard from '@/components/SalesMoneyCard';
 import { DollarSign } from 'lucide-react';
 import SalesTargets from './SalesTargets';
 import Loader from '@/components/Loader';
+import { getOrdersAnalytics } from '@/api/orders';
 
 
 const SalesHome = () => {
@@ -28,11 +29,11 @@ const queryClient = useQueryClient()
   })
 
 const {data , isLoading , isError} = useQuery({
-    queryKey:['ordersAnalytics',startDate,endDate],
+    queryKey:['ordersAnalyticsSales',startDate,endDate],
     queryFn:()=>getOrdersAnalytics(startDate,endDate)
 })
 
-
+console.log(data)
     const {data : myCash , isLoading :myCashLoadin , isError : myCahError}=useQuery({
         queryKey:["myCash"],
         queryFn: cashVerify ,

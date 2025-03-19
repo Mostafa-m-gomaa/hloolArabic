@@ -158,6 +158,8 @@ const exportToExcel = () => {
         <div className="flex justify-between w-full items-center">
 
           <Button onClick={exportToExcel}>{loader ?<LoaderPinwheel className='animate-spin' /> : <Download /> }</Button>
+                     <Button className="mx-2" > <Link to="/home/addOrder"> اضافة طلب</Link> </Button>
+          
           <h1>القالب الرئيسي</h1>
         </div>
         <OrdersFilter filterChange={handleFilterChange} />

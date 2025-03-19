@@ -88,6 +88,7 @@ useEffect(()=>{
     setMenu([
       { name: "الصفحة الرئيسية", link: "/home" , icon:<House/> },
       { name: "التقارير", link: "/home/reports", icon:<ClipboardMinus/> },
+      { name: "التارجت", link: "/home/targets" , icon:  <Crosshair /> },
       { name: "المستحقات علي المشرفين", link: "/home/supervisorsdues", icon:<ClipboardMinus/> },
     ])
 

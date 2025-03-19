@@ -19,6 +19,7 @@ import { DatePickerDemo } from "@/components/DatePicker"
 import { PaginationDemo } from "@/components/Pagination"
 import Card from "./Card"
 import { set } from "date-fns"
+import SpecCard from "./SpecCard"
 
 
 export function DialogDemo({setOrder}) {
@@ -115,7 +116,7 @@ export function DialogDemo({setOrder}) {
 
 <div className='w-[98%] lg:w-[95%] mx-auto flex flex-col items-end gap-3 justify-center'>
             {orderItems.map((item,index)=>( 
-             <Card  key={index} number={index+1} item={item} anim={false} click={
+             <SpecCard  key={index} number={index+1} item={item} anim={false} click={
                 (item)=>{
                     setOrder(item) 
                     setActiveOrder(item._id)

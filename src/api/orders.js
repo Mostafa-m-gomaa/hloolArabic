@@ -78,6 +78,13 @@ export const getMyOrders = (params = {} , page) => {
         body:JSON.stringify(params)
     })
   }
+  export const updateOrder =(params,id)=>{
+    const url = `/orders/${id}`
+    return fetchClient(url , {
+        method:"PUT",
+        body:JSON.stringify(params)
+    })
+  }
 
   export const getOneOrder = (id) => {
     return fetchClient(`/orders/${id}`);

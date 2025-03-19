@@ -24,7 +24,14 @@ export function DatePickerDemo({searchFunc , ...props}) {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
   
-
+  const getFormattedDate = (today) => {
+    // const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Ensure 2 digits
+    const day = String(today.getDate()).padStart(2, "0"); // Ensure 2 digits
+  
+    return `${year}-${month}-${day}`;
+  };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -45,7 +52,8 @@ export function DatePickerDemo({searchFunc , ...props}) {
           selected={date}
           onSelect={(selectedDate)=>{
             setDate (selectedDate),
-            searchFunc(props.type, formatDate(selectedDate))
+            searchFunc(props.type, getFormattedDate(selectedDate))
+            console.log(getFormattedDate(selectedDate))
           }}
           initialFocus
         />

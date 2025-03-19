@@ -4,27 +4,18 @@ import { addOrderValidation, CreateUsersValidation } from '@/validation/Validati
 import { Formik ,Form, Field } from 'formik'
 import { Button } from '@/components/ui/button'
 import { useMutation ,useQueryClient , useQuery } from '@tanstack/react-query'
-import { getSuperVisors} from '@/api/users'
-import {Loader2} from "lucide-react"
+import {CretaUser, getSuperVisors} from '@/api/users'
+import {Edit, Loader2} from "lucide-react"
 import toast from 'react-hot-toast' 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getAvailableProducts, getProducts } from '@/api/products'
-import { createOrder } from '@/api/orders'
-import {getOneOrder} from '@/api/orders'
-import { useParams } from 'react-router-dom'
-
+import { createOrder, updateOrder } from '@/api/orders'
 
 
 
 const EditOrder = () => {
-    const param =useParams().id
     const queryClient = useQueryClient()
     const history = useNavigate()
-    const {data : theOrder} = useQuery({
-        queryKey:["orders"],
-        queryFn:()=>getOneOrder(param)
-    })
-
 
     const {data :superVisors} = useQuery({
         queryKey:["users"],
@@ -49,41 +40,45 @@ const initialValues={
     sellingDate:"",
     phone:"",
     country:"",
+    city:"",
     product:"",
     quantity:"",
     deposit:"",
     depositPaymentMethod:"",
     deliveryDate:"",
     restMoneyPaymentMethod:"",
-    supervisorCommission:"",
-    salesManCommission:"",
     notes:"",
     deliveryMan:"",
-    deliveryCommission:""
 
 }
-
+const id = useParams().id
 const mutation = useMutation({
-    mutationFn:(values)=>createOrder(values) ,
-    onSuccess:(res)=>{
-     
-        queryClient.invalidateQueries({queryKey:["orders"]})
-        toast.success("تم اضافة الطلب  بنجاح")
-        history("/home/myorders")
-    },
-    onError:(err)=>{
-        console.log(err)
-    }
-})
+  mutationFn: ({ values, id }) => updateOrder(values, id),
+  onSuccess: (res) => {
+      console.log(res);
+      if(res.status === "success") {
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+        toast.success("تم تعديل الطلب بنجاح");
+      }
+  },
+  onError: (err) => {
+      console.log(err);
+  }
+});
 
-const onSubmit=(values)=>{
-    mutation.mutate(values)
-}
+const onSubmit = (values) => {
+  const filteredValues = Object.fromEntries(
+      Object.entries(values).filter(([_, value]) => value !== "")
+  );
+  console.log(filteredValues);
+  
+  mutation.mutate({ values: filteredValues, id });
+};
 
   return (
     <div className='w-[100%] mx-auto flex flex-col gap-3'>
-        <h1 className='py-12'>املأ البيانات الأتية لأضافة طلب</h1>
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={addOrderValidation} >
+        <h1 className='py-12'>تعديل الطلب</h1>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} >
             {({errors ,touched})=>    <Form className='flex flex-col gap-10 w-[80%] mx-auto py-7'>
                 
                 <Custom label="اسم العميل" name="customerName" err={errors.customerName}  />
@@ -92,11 +87,11 @@ const onSubmit=(values)=>{
                 <Custom label="تاريخ البيع" name="sellingDate" err={errors.sellingDate}  />
                 <Custom label="تاريخ التسليم" name="deliveryDate" err={errors.deliveryDate}  />
                 <Custom label="رقم الهاتف" name="phone" err={errors.phone}  />
-                <Custom label="البلد" name="country" err={errors.country}  />
+                <Custom label="المنطقة" name="country" err={errors.country}  />
+                <Custom label="المدينة" name="city" err={errors.city}  />
                 <Custom label="الكمية" name="quantity" err={errors.quantity}  />
                 <Custom label="الدفعه المقدمة" name="deposit" err={errors.deposit}  />
-                <Custom label="عمولة المشرف" name="supervisorCommission" err={errors.supervisorCommission}  />
-                <Custom label="عمولة المندوب" name="salesManCommission" err={errors.salesManCommission}  />
+           
                 <Custom label="ملاحظات" name="notes" err={errors.notes}  />
                 <div className="flex flex-col gap-4">
         <Field as="select" name="gender" className="w-full border-2 border-black rounded-lg p-2">
@@ -113,14 +108,13 @@ const onSubmit=(values)=>{
           {superVisorsItems.map((item , index)=><option value={item._id}>{item.name}</option> )}
 
         </Field>
-        <Field as="select" name="deliveryMan" className="w-full border-2 border-black rounded-lg p-2">
+        <Field as="select" name="deliveryMan" className="w-full border-2 border-black rounded-lg p-2 mb-6">
           <option value="">اختر رجل التوصيل</option>
 
           {superVisorsItems.map((item , index)=><option value={item._id}>{item.name}</option> )}
 
         </Field>
         {touched.deliveryMan && errors.deliveryMan && <div className="text-red-500">{errors.deliveryMan}</div>}
-        <Custom label="عمولة رجل التوصيل" name="deliveryCommission" err={errors.deliveryCommission}  />
         <Field as="select" name="product" className="w-full border-2 border-black rounded-lg p-2">
           <option value="">اختر المنتج</option>
           {productsItems.map((item , index)=><option value={item._id}>{item.title}</option> )}
@@ -149,7 +143,7 @@ const onSubmit=(values)=>{
 
 
       <Button disabled={mutation.isPending} type="submit" >
-{mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "اضافة"}
+{mutation.isPending ?<div className='flex items-center gap-2'> <Loader2 className="animate-spin" />Please wait</div> : "تعديل الطلب"}
     </Button>
             </Form>}
          

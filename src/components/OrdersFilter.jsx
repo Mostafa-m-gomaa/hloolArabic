@@ -267,11 +267,8 @@ export function OrdersFilter({filterChange}) {
 <InputSearch title="رقم الهاتف" searchFunc={filterChange} type={"phone"} />
 <InputSearch title="عمولة المندوب" searchFunc={filterChange} type={"salesManCommission"} />
 <InputSearch title="عمولة المشرف" searchFunc={filterChange} type={"supervisorCommission"} />
+  <DatePickerDemo searchFunc={filterChange} title ="تاريخ الانشاء" type={"day"} /> 
 
-  <DatePickerDemo searchFunc={filterChange} title="تاريخ التوصيل" type={"deliveryDate"} /> 
-  <DatePickerDemo searchFunc={filterChange} title ="تاريخ الميلاد" type={"birthDate"} /> 
-  <DatePickerDemo searchFunc={filterChange} title ="تاريخ الانشاء" type={"createdAt"} /> 
-  <DatePickerDemo searchFunc={filterChange} title ="تاريخ البيع" type={"sellingDate"} /> 
  
 </div>
 

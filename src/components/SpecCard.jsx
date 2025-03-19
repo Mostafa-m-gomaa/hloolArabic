@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 import { Loader2Icon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Card = ({number ,item , anim , ...props}) => {
+const SpecCard = ({number ,item , anim , ...props}) => {
 const role = localStorage.getItem("role")
     
 const formatDate = (date) => {
@@ -92,13 +92,8 @@ const retrieveMutation = useMutation({
     </div>
                 <div className="flex flex-col lg:flex-row items-center gap-2">
 
-                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "غير جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
-                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <PopoverDemo id={item._id} /> : null}
-                  {["manager" , "admin"].includes(role) && props.deliveryStatus === "جاهز للتسليم" ? <Button type="button" disabled={mutation.isPending} onClick={mutation.mutate}>{mutation.isPending ? <Loader2Icon className='animate-spin' />:"جعله قيد التوصيل"}</Button> : null}
-                  {["manager" , "admin"].includes(role) &&  !["تم التسليم" , "ملغي"].includes(props.deliveryStatus) ? <Button className="bg-red-500" type="button" disabled={cancelMutation.isPending} onClick={cancelMutation.mutate}>{cancelMutation.isPending ? <Loader2Icon className='animate-spin' />:"الغاء الطلب"}</Button> : null}
-                  {["manager" , "admin"].includes(role) &&  ["ملغي"].includes(props.deliveryStatus) ? <Button  type="button" disabled={retrieveMutation.isPending} onClick={retrieveMutation.mutate}>{retrieveMutation.isPending ? <Loader2Icon className='animate-spin' />:"استرجاع الطلب"}</Button> : null}
-                  <ShowPopOver item={item} />
-                 <Button><Link to={`/home/editorder/${item._id}`}>تعديل</Link></Button>
+                  {/* <ShowPopOver item={item} /> */}
+               
                 </div>
 
    </div>
@@ -109,4 +104,4 @@ const retrieveMutation = useMutation({
       }
 
 
-export default Card
+export default SpecCard
