@@ -170,6 +170,7 @@ const newOrdersObj = {
     burnOuts : [burnOutsObj],
     fuelCost: "50", 
     description: "",
+    reportDate: "",
     companyDues: cash + cashWithMe,
     extraDeposits: [depositOrder],
     userDues : [userDuesObj],
@@ -706,7 +707,12 @@ return Array.from(commissionMap.values())
   )}
 </FieldArray>
 
-
+<CustomInput
+            name={`reportDate`}
+            label="تاريخ التقرير"
+            type={"date"}
+         
+          />
           
 <Button onClick={generateOutgoings} type="button">حساب المخرجات</Button>
 
