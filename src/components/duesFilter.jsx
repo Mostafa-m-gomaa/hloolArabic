@@ -78,7 +78,7 @@ export function DuesFilter({filterChange}) {
 </div>
 }
 
-<div className="relative">
+{/* <div className="relative">
   <details className="group [&_summary::-webkit-details-marker]:hidden">
     <summary
       className="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600"
@@ -158,10 +158,10 @@ export function DuesFilter({filterChange}) {
       </div>
     </div>
   </details>
-</div>
+</div> */}
  
 
-  <DatePickerDemo searchFunc={filterChange} title ="تاريخ انشاء التقرير" type={"createdAt"} /> 
+  {/* <DatePickerDemo searchFunc={filterChange} title ="تاريخ انشاء التقرير" type={"createdAt"} />  */}
 
  
 </div>

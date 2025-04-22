@@ -15,7 +15,7 @@ const SalesReward = () => {
             queryFn:getTargetsAnalytics
         })
 
-        console.log(targetsAn);
+    
   
 const rewards = targetsAn?.data || []
 

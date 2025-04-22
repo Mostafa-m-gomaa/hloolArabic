@@ -19,30 +19,57 @@ export const productValidation =Yup.object({
     desc: Yup.string().required("يجب أن تدخل الوصف") ,
     ValidityPeriod: Yup.number().required("يجب أن تدخل فترة الصلاحية") ,
     price: Yup.number().required("يجب أن تدخل السعر") ,
+    quantity: Yup.number().required("يجب أن تدخل السعر") ,
     salesManCommission: Yup.number().required("يجب أن تدخل عمولة المندوب") ,
     supervisorCommission: Yup.number().required("يجب أن تدخل عمولة المشرف") ,
     deliveryCommission: Yup.number().required("يجب أن تدخل عمولة رجل التوصيل") ,
 })
-export const addOrderValidation =Yup.object({
-    customerName: Yup.string().required("يجب أن تدخل اسم العميل") ,
-    receipt: Yup.string().required("يجب أن تدخل رقم السند") ,
-    gender: Yup.string().required("يجب أن تدخل الجنس") ,
-    depositPaymentMethod: Yup.string().required("يجب أن تدخل طريقة دفع الدفعة المقدمة") ,
-    restMoneyPaymentMethod: Yup.string().required("يجب أن تدخل طريقة دفع الدفعة الباقيه") ,
-    supervisor: Yup.string().required("يجب أن تختار المشرف") ,
-    birthDate: Yup.string().required("يجب أن تدخل تاريخ الميلاد") ,
-    sellingDate: Yup.string().required("يجب أن تدخل تاريخ البيع") ,
-    deliveryDate: Yup.string().required("يجب أن تدخل تاريخ التسليم") ,
-    phone: Yup.string().required("يجب أن تدخل رقم الهاتف") ,
-    country: Yup.string().required("يجب أن تدخل البلد") ,
-    city: Yup.string().required("يجب أن تدخل البلد") ,
-    quantity: Yup.number().required("يجب أن تدخل الكمية") ,
-    deposit: Yup.number().required("يجب أن تدخل الدفعة المقدمة") ,
-    product: Yup.string().required("يجب أن تختار المنتج") ,
-    notes: Yup.string() ,
-    deliveryMan: Yup.string().required("يجب أن تختار رجل التوصيل") ,
+// export const addOrderValidation =Yup.object({
 
+//     receipt: Yup.string().required("يجب أن تدخل رقم السند") ,
+//     depositPaymentMethod: Yup.string().required("يجب أن تدخل طريقة دفع مبلغ العربون") ,
+//     supervisor: Yup.string().required("يجب أن تختار المشرف") ,
+//     sellingDate: Yup.string().required("يجب أن تدخل تاريخ البيع") ,
+//     deliveryDate: Yup.string().required("يجب أن تدخل تاريخ التسليم") ,
+//     phone: Yup.string().required("يجب أن تدخل رقم الهاتف") ,
+//     country: Yup.string().required("يجب أن تدخل البلد") ,
+//     city: Yup.string().required("يجب أن تدخل البلد") ,
+//     quantity: Yup.number().required("يجب أن تدخل الكمية") ,
+//     deposit: Yup.number().required("يجب أن تدخل الدفعة المقدمة") ,
+//     product: Yup.string().required("يجب أن تختار المنتج") ,
+//     notes: Yup.string() ,
+
+// })
+
+
+
+
+export const addOrderValidation = Yup.object({
+  receipt: Yup.string().required('يجب أن تدخل رقم السند'),
+  depositPaymentMethod: Yup.string().required('يجب أن تدخل طريقة دفع مبلغ العربون'),
+  supervisor: Yup.string().required('يجب أن تختار المشرف'),
+  sellingDate: Yup.string().required('يجب أن تدخل تاريخ البيع'),
+  deliveryDate: Yup.string().required('يجب أن تدخل تاريخ التسليم'),
+  country: Yup.string().required('يجب أن تدخل البلد'),
+  city: Yup.string().required('يجب أن تدخل المدينة'),
+  deposit: Yup.number()
+    .typeError('يجب أن تدخل رقم صحيح')
+    .required('يجب أن تدخل الدفعة المقدمة'),
+  product: Yup.string().required('يجب أن تختار المنتج'),
+  notes: Yup.string(),
+
+  customersData: Yup.array()
+    .of(
+      Yup.object().shape({
+        customerName: Yup.string().required('يجب أن تدخل اسم العميل'),
+        phone: Yup.string().required('يجب أن تدخل رقم الهاتف'),
+        birthDate: Yup.string().required('يجب أن تدخل تاريخ الميلاد'),
+        gender: Yup.string().required('يجب أن تختار الجنس'),
+      })
+    )
+    .min(1, 'يجب إدخال بيانات عميل واحد على الأقل'),
 })
+
 
 export const addReportValidationSchema = Yup.object().shape({
     newOrders: Yup.array()

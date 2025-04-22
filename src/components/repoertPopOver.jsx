@@ -13,6 +13,7 @@ import MyTableRow from "./MyTableRow";
 
 
 export function ReportPopOver({item}) {
+  console.log(item)
   const formatDate = (date) => {
     if (!date) return "N/A"; // Return a default value if the date is undefined
     const validDate = new Date(date);
@@ -51,7 +52,6 @@ export function ReportPopOver({item}) {
         <div className="flex gap-0 flex-col w-[100%]  mx-auto border-2 border-gray-400 rounded-md">
 
 <MyTableRow title={"تم الانشاء في"} content={formatDate(item?.createdAt)} />
-<MyTableRow title={"تكلفة الوقود"} content={item?.fuelCost || "غير موجود"} />
 <MyTableRow title={"تاريخ التقرير"} content={formatDate(item?.reportDate)} />
 <MyTableRow title={"منشئ التقرير"} content={item?.creator?.name || "غير موجود"} />
 <MyTableRow title={"الوصف"} content={item?.description || "غير موجود"} />
@@ -60,7 +60,7 @@ export function ReportPopOver({item}) {
   <div className="w-[40%] bg-myBlue text-center py-2 text-white">طلب جديد</div>
   
   <div className="w-[59%] text-black p-2 flex flex-col *:flex *:justify-between">
-    <span><span>{item?.deposit}</span> : <span>الدفعه المقدمة</span></span>
+    <span><span>{item?.deposit}</span> : <span>مبلغ العربون</span></span>
     <span><span>{item?.depositPaymentMethod}</span> : <span>طريقة الدفع</span></span>
     <span><span>{item?.product}</span> : <span>المنتج</span></span>
     <span><span>{item?.quantity}</span> : <span>الكمية</span></span>

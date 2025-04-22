@@ -17,8 +17,7 @@ const Targets = () => {
             queryFn:getTargetsAnalytics
         })
 
-        console.log(targetsAn);
-  
+      
 const targetsItems = targets?.data || []
 
   return (

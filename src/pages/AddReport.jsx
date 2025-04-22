@@ -35,17 +35,18 @@ const CreateReport = () => {
 
 
   const {data:salesMen , isLoading : salesMenLoading} = useQuery({
-    queryKey : ["users"] ,
+    queryKey : ["reportUsers"] ,
     queryFn:getSalesMan
   })
   const salesMenItems = salesMen?.data || []
 
   const {data :products}=useQuery({
-    queryKey:["products"] ,
+    queryKey:["reportProducts"] ,
     queryFn:getProducts
   })
 
   const productItems = products?.data
+
 
   const {data : duesOverMe}=useQuery({
     queryKey:["dues×OverMe"] ,
@@ -80,29 +81,37 @@ const CreateReport = () => {
   
  
   
-
+const [checkOutGoings , setcheckOutGoings] =useState(false)
 
   const generateOutgoings = () => {
-    return new Promise((resolve) => {
-      const newOutgoings = commessions
-        .filter((item) => item.userId !== undefined)
-        .map((item) => ({
-          user: item.userId,
-          deservedCommission: item.userCommission,
-          gottenCommission: commissionInputs[item.userId] || "0",
-        }));
-   toast.success("تم حساب المخرجات بنجاح")
-      setOutgoings((prev) => {
-        const updatedOutgoings = [...newOutgoings];
-        resolve(updatedOutgoings); // Resolve the promise after state update
-        return updatedOutgoings;
-      });
-    });
-   
+    if(hasbaCheck === false){
+toast.error("برجاء تفعيل الحاسبة")
+    }else{
+
+      return new Promise((resolve) => {
+        const newOutgoings = commessions
+          .filter((item) => item.userId !== undefined)
+          .map((item) => ({
+            user: item.userId,
+            deservedCommission: item.userCommission,
+            gottenCommission: commissionInputs[item.userId] || "0",
+          }));
+     toast.success("تم حساب المخرجات بنجاح")
+        setOutgoings((prev) => {
+          const updatedOutgoings = [...newOutgoings];
+          resolve(updatedOutgoings); // Resolve the promise after state update
+          setcheckOutGoings(true)
+          return updatedOutgoings;
+        });
+      }
+    );
+    }
+    
+
   };
   
 
-
+console.log(commissionInputs)
 
 const [usersCommission, setUsersCommission] = useState([]);
 
@@ -114,7 +123,7 @@ const mutation =useMutation({
   mutationFn:(values)=>createReport(values),
   onSuccess:(res)=>{
    
-
+console.log(res)
     if(res.status === "success"){
       toast.success("تم انشاء التقرير بنجاح")
       history("/home/myreports")
@@ -152,6 +161,7 @@ const deliveredOrdersObj = {
   deservedSalesManCommission: "",
   deservedSupervisorCommission: "",
   deliveryCommission: "",
+  salesMan:"" ,
   restOrderCost: [restMoneyObj],
 };
 const newOrdersObj = {
@@ -163,44 +173,69 @@ const newOrdersObj = {
 };
 
   const initialValues = {
-    newOrders: [newOrdersObj],
-    deliveredOrders: [deliveredOrdersObj],
+    newOrders: [],
+    deliveredOrders: [],
     outgoings : outgoings,
     categorizedMoney: categorizedMoney,
-    burnOuts : [burnOutsObj],
-    fuelCost: "50", 
+    burnOuts : [],
     description: "",
     reportDate: "",
-    companyDues: cash + cashWithMe,
-    extraDeposits: [depositOrder],
-    userDues : [userDuesObj],
+    // companyDues: cash + cashWithMe,
+    extraDeposits: [],
+    userDues : [],
   };
 
-  
+const [hasbaCheck,setHasbaCheck]=useState(false)
+const [firstCash,setFirstCash]=useState(0)
+
+const hasba =(values)=>{
+  calculateCategorizedMoney(values);
+  aggregateUserCommissions(usersCommission);
+  setHasbaCheck(true)
+  setCommissionInputs({})
+  setPreviousValues({})
+}
+
+
+
+
 
 
   const onSubmit = async (values) => {
-    if(values.deliveredOrders[0].order === ""){
-      toast.error("برجاء إضافة طلبات مسلمة")
-    }
-    else if (categorizedMoney.length === 0) {
-      calculateCategorizedMoney(values);
-      aggregateUserCommissions(usersCommission);
+    // if(values.deliveredOrders[0].order === ""){
+    //   toast.error("برجاء إضافة طلبات مسلمة")
+    // }
+    //  if (categorizedMoney.length === 0) {
+    //   calculateCategorizedMoney(values);
+    //   aggregateUserCommissions(usersCommission);
 
-    } else {
-      if(outgoings.length === 0){
-        toast.error("برجاء حساب المخرجات")
-      }
-      else{
-        values.outgoings = outgoings;
-        values.categorizedMoney = categorizedMoney;
-        values.companyDues = cash + cashWithMe;
+    // } else {
     
-        mutation.mutate(values);
-   
+    // }
+
+if(hasbaCheck === false){
+  toast.error("برجاء تفعيل الحاسبة")
+}
+else if(checkOutGoings === false){
+      toast.error("برجاء حساب المخرجات")
+    }
+    else{
+      values.outgoings = outgoings;
+      values.categorizedMoney = categorizedMoney;
+  
+      if(cash >= 0){
+        values.companyDues = cash 
       }
+      else if(cash < 0){
+        values.usedCompanyDues = -cash 
+      }
+      // console.log(values)
+      mutation.mutate(values);
+
+ 
     }
   };
+
 
 
   const aggregateUserCommissions = (userCommission) => {
@@ -284,6 +319,7 @@ return Array.from(commissionMap.values())
     let totalCash = 0; // Variable to track total cash amount
   
     // Loop through delivered orders and sum restOrderCost amounts by payment method
+
     values.deliveredOrders.forEach((order) => {
       order.restOrderCost.forEach(({ amount, paymentMethod }) => {
         if (amount && paymentMethod) {
@@ -330,6 +366,7 @@ return Array.from(commissionMap.values())
   
     // Update the cash state
     setCash(totalCash);
+    setFirstCash(totalCash)
   
     // Convert categorizedMoney object to an array
     const categorizedArray = Object.keys(categorizedMoney).map((method) => ({
@@ -379,7 +416,7 @@ return Array.from(commissionMap.values())
                       as="select"
                       className="border-2 border-black rounded-lg p-2"
                     
-                    >   <option value="">طريقة دفع الدفعة المقدمة</option>
+                    >   <option value="">طريقة دفع مبلغ العربون</option>
                     <option value="كاش">كاش</option>
                     <option value="تحويل بنك أهلي">تحويل بنك أهلي</option>
                     <option value="تحويل بنك راجحي">تحويل بنك راجحي</option>
@@ -403,12 +440,7 @@ return Array.from(commissionMap.values())
                  
               
                 
-                    <CustomInput
-                      name={`newOrders[${index}].quantity`}
-                      label="الكمية"
-                      type={"number"}
-                   
-                    />
+                 
 
                     <Field  name={`newOrders[${index}].product`} as="select"  className="border-2 border-black rounded-lg p-2">
                     <option value="">اختر المنتج</option>
@@ -433,32 +465,68 @@ return Array.from(commissionMap.values())
              <div className="flex flex-col justify-center gap-10 items-center  w-full">
                 {values.deliveredOrders.map((_, index) => (
                 <div key={index} className="border-b py-10 px-4 w-[90%] bg-white rounded-md shadow-2xl flex flex-col lg:flex-row  justify-center gap-10 items-center border-2 flex-wrap ">
-                        <DialogDemo
-                        setOrder={(order) => {
-                          setRestCash(order?.remainingAmount || 0);
-                          setUsersCommission([...usersCommission, {salesManName: order?.salesPerson?.name ,saledManId : order?.salesPerson?._id, salesManComm: order.salesManCommission ,supervisorName: order?.supervisor?.name ,superVisorId : order?.supervisor?._id, superVisorComm: order?.supervisorCommission , deliveryCommisssion : order?.deliveryCommission ? order?.deliveryCommission : 0 , deliveryManName : order?.deliveryMan?.name , deliveryManId : order?.deliveryMan?._id }])  ;
+          
+                      <DialogDemo
+  setOrder={(order) => {
+    setRestCash(order?.remainingAmount || 0);
 
-                      
-                          const updatedDeliveredOrders = [
-                            ...values.deliveredOrders,
-                          ];
-                          updatedDeliveredOrders[index] = {
-                            ...updatedDeliveredOrders[index],
-                            customerName: order.customerName || "" ,
-                            deliveryReceipt: order.DeliveryReceipt || "" ,
-                            order: order._id || "",
-                            deservedSalesManCommission:
-                              order.salesManCommission || "",
-                              deservedSupervisorCommission: order.supervisorCommission || "",
-                              deliveryReceipt : order.deliveryReceipt || "",
-                            deliveryCommission: order.deliveryCommission || "",
-                          };
-                          setFieldValue(
-                            "deliveredOrders",
-                            updatedDeliveredOrders
-                          );
-                        }}
-                      />
+    const newCommissionEntry = {
+      order: order?._id,
+      salesManName: order?.salesPerson?.name,
+      saledManId: order?.salesPerson?._id,
+      salesManComm: order.salesManCommission,
+      supervisorName: order?.supervisor?.name,
+      superVisorId: order?.supervisor?._id,
+      superVisorComm: order?.supervisorCommission,
+      deliveryCommisssion: order?.deliveryCommission || 0,
+      deliveryManName: order?.deliveryMan?.name,
+      deliveryManId: order?.deliveryMan?._id,
+    };
+
+    // setUsersCommission((prev) => {
+    //   const existingIndex = prev.findIndex((item) => item.order === order?._id);
+
+    //   if (existingIndex !== -1) {
+    //     const updated = [...prev];
+    //     updated[existingIndex] = newCommissionEntry;
+    //     return updated;
+    //   } else {
+    //     return [...prev, newCommissionEntry];
+    //   }
+    // });
+
+    setUsersCommission((prev) => {
+      const updated = [...prev];
+      updated[index] = {
+        order: order?._id,
+        salesManName: order?.salesPerson?.name,
+        saledManId: order?.salesPerson?._id,
+        salesManComm: order.salesManCommission,
+        supervisorName: order?.supervisor?.name,
+        superVisorId: order?.supervisor?._id,
+        superVisorComm: order?.supervisorCommission,
+        deliveryCommisssion: order?.deliveryCommission || 0,
+        deliveryManName: order?.deliveryMan?.name,
+        deliveryManId: order?.deliveryMan?._id,
+      };
+      return updated;
+    });
+
+    const updatedDeliveredOrders = [...values.deliveredOrders];
+    updatedDeliveredOrders[index] = {
+      ...updatedDeliveredOrders[index],
+      customerName: order.customerName || "",
+      deliveryReceipt: order.DeliveryReceipt || "",
+      order: order._id || "",
+      deservedSalesManCommission: order.salesManCommission || "",
+      deservedSupervisorCommission: order.supervisorCommission || "",
+      deliveryCommission: order.deliveryCommission || "",
+      salesMan: order?.salesPerson?.name || "",
+    };
+
+    setFieldValue("deliveredOrders", updatedDeliveredOrders);
+  }}
+/>
                     <CustomInput
                       name={`deliveredOrders[${index}].customerName`}
                       label="اسم العميل"
@@ -469,6 +537,12 @@ return Array.from(commissionMap.values())
                     <CustomInput
                       name={`deliveredOrders[${index}].deliveryReceipt`}
                       label="رقم السند"
+                      type={"text"}
+                      disabled ={true}
+                    />
+                    <CustomInput
+                      name={`deliveredOrders[${index}].salesMan`}
+                      label="المندوب"
                       type={"text"}
                       disabled ={true}
                     />
@@ -525,7 +599,7 @@ return Array.from(commissionMap.values())
           </FieldArray>
 
 {/* extra deposites section  */}
-<h1>اضافة عرابين</h1>
+<h1>عربون اضافي</h1>
           <FieldArray name={`extraDeposits`}>
                       {({ push: pushRestOrderCost, remove: removeRestOrderCost }) => (
                         <div className="flex flex-col gap-4 items-center mx-auto bg-white p-4 w-[90%] rounded-md shadow-2xl ">
@@ -583,12 +657,12 @@ return Array.from(commissionMap.values())
 
 
 <div className="bg-white flex flex-col gap-10 items-center w-[90%] py-10 px-4 rounded-md shadow-2xl border-2 mx-auto">
-    {commessions.length > 0 ? (
+    {true && (
       <div className="flex flex-col border-2 border-black p-4 rounded-md gap-2 w-full">
         <h2>العمولات المستحقة</h2>
-        <div>{cash + cashWithMe} لديك من النقد :</div>
-        <div>{cashWithMe} السابقين</div>
-        <div>{cash} النقد لهذا التقرير</div>
+        <div>{cashWithMe} الصندوق</div>
+        <div>{cash} اجمالي المبلغ لهذا التقرير</div>
+        <div>{cash + cashWithMe} الاجمالي الكلي:</div>
         {commessions.map((item, i) =>
           item.userId === undefined ? null : (
             <div className="flex gap-2 w-full justify-between" key={i}>
@@ -607,11 +681,10 @@ return Array.from(commissionMap.values())
           )
         )}
       </div>
-    ) : (
-      <Button >
+    )}
+       <Button type="button" onClick={()=>hasba(values)}>
         الحاسبة
       </Button>
-    )}
 
     <CustomInput type={"text"} name="description" label="الوصف" />
   </div>

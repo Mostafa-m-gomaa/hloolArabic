@@ -53,7 +53,7 @@ export function DatePickerDemo({searchFunc , ...props}) {
           onSelect={(selectedDate)=>{
             setDate (selectedDate),
             searchFunc(props.type, getFormattedDate(selectedDate))
-            console.log(getFormattedDate(selectedDate))
+
           }}
           initialFocus
         />

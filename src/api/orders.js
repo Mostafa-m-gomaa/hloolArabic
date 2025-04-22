@@ -31,6 +31,14 @@ export const getMyOrders = (params = {} , page) => {
     const url = queryString ? `/orders/mine?limit=250 &&?page=${page}&&${queryString}` : `/orders/mine?limit=250 &&?page=${page}`;
     return fetchClient(url);
   };
+export const getDeliveringOrders = (params = {} , page) => {
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value) // Remove empty values
+    );
+    const queryString = new URLSearchParams(filteredParams).toString();
+    const url = queryString ? `/orders/getReadyToBeDeliveredOrders?limit=250 &&?page=${page}&&${queryString}` : `/orders/getReadyToBeDeliveredOrders?limit=250 &&?page=${page}`;
+    return fetchClient(url);
+  };
 
   export const makeOrderReady =(id , params)=>{
 

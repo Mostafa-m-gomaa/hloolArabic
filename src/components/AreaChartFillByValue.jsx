@@ -9,18 +9,21 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { ChartSpline } from 'lucide-react';
+import html2canvas from "html2canvas";
+import { Button } from "@/components/ui/button";
 
-const data = [
-  { name: 'اول يوم', order: 5000, pv: 5000, amt: 2400 },
-  { name: 'ثاني يوم', order: 900, pv: 1398, amt: 2210 },
-  { name: 'ثالاث يوم', order: 1000, pv: 9800, amt: 2290 },
-  { name: 'رابع يوم', order: 500, pv: 3908, amt: 2000 },
-  { name: 'خامس يوم', order: 2000, pv: 4800, amt: 2181 },
-  { name: 'سادس يوم', order: 250, pv: 3800, amt: 2500 },
-  { name: 'سابع يوم', order: 3490, pv: 4300, amt: 2100 },
-];
 
-const AreaChartComponent = () => {
+
+const AreaChartComponent = ({sales}) => {
+
+  const data = Object.entries(sales).length > 0 ?
+  Object.entries(sales).map(([key, value]) => ({
+    name: key,
+    order: value,
+    pv: 1000,
+    amt: 1000,
+  })) : []
+
   const gradientOffset = useMemo(() => {
     const dataMax = Math.max(...data.map(i => i.order));
     const dataMin = Math.min(...data.map(i => i.order));
@@ -30,16 +33,35 @@ const AreaChartComponent = () => {
     return dataMax / (dataMax - dataMin);
   }, [data]);
 
-  return (
-    <div className="flex flex-col gap-4 bg-white p-4 rounded-md shadow-lg w-full">
 
+
+  const takeScreenshot = () => {
+    const element = document.getElementById("capture");
+
+    html2canvas(element, {
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      windowWidth: element.scrollWidth, // Capture full width
+      windowHeight: element.scrollHeight, // Capture full height
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "screenshot.png";
+      link.click();
+    });
+  };
+
+  return (
+    <div id="capture" className="flex flex-col gap-4 bg-white p-4 rounded-md shadow-lg w-full overflow-x-auto">
+ <Button className="w-fit"  onClick={takeScreenshot}>Capture</Button>
     <div className="flex justify-between border-b-2 pb-4 border-black">
         <div className='flex items-center gap-2 bg-[red] p-2 rounded-md text-white'>
         <ChartSpline size={20} />
         </div>
-        <h2>اداء المبيعات خلال الاسبوع</h2>
+        <h2>اداء المبيعات</h2>
     </div>
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width={data.length * 94} height={400}>
       <AreaChart
         data={data}
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}

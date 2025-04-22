@@ -26,7 +26,7 @@ export function PayReward({ id }) {
   const mutation = useMutation({
     mutationFn: ({ mutationId, values }) => payTarget(mutationId, values),
     onSuccess: (res) => {
-        console.log(res);
+       
       queryClient.invalidateQueries({ queryKey: ["adminTargetsAn"] })
       if (res.status === "success") {
         toast.success("تم تحديث الطلب بنجاح")

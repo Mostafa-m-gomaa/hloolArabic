@@ -58,7 +58,8 @@ export function OrdersTable({orders}) {
           <TableHead className="">المتبقي منذ دفع العربون</TableHead>
           <TableHead className ="">المبلغ المتبقي للطلب</TableHead>
           <TableHead className ="">مسئول التوصيل</TableHead>
-          <TableHead className="">تاريخ التسليم</TableHead>
+          <TableHead className="">تاريخ التسليم المتوقع</TableHead>
+          <TableHead className="">تاريخ التسليم الفعلي</TableHead>
           <TableHead className="">سند التسليم</TableHead>
           <TableHead className="">اصدار البطاقة</TableHead>
           <TableHead className="">طريقة دفع الدفعه الباقي</TableHead>
@@ -110,6 +111,7 @@ export function OrdersTable({orders}) {
         <TableCell>{ item?.remainingAmount || "N/A"}</TableCell>
         <TableCell>{item?.deliveryMan?.name || "N/A"}</TableCell>
         <TableCell>{formatDate(item?.deliveryDate)}</TableCell>
+        <TableCell>{item?.actualDeliveryDate? formatDate(item?.actualDeliveryDate) : "لم يتم التسليم"}</TableCell>
         <TableCell>{item?.DeliveryReceipt || "N/A"}</TableCell>
         <TableCell>{item?.productIssuanceDate ?formatDate(item.productIssuanceDate) : "لا يوجد"}</TableCell>
         <TableCell>{item?.restMoneyPaymentMethod || "N/A"}</TableCell>

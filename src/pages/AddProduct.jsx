@@ -18,6 +18,7 @@ const AddProduct = () => {
 const initialValues={
     title:"",
     desc:"",
+    quantity:"",
     ValidityPeriod:"",
     price:"",
     salesManCommission:"",
@@ -51,6 +52,7 @@ const onSubmit=(values)=>{
                 <Custom label="الوصف" name="desc" err={errors.desc} />
                 <Custom label="فترة الصلاحية" name="ValidityPeriod" err={errors.ValidityPeriod} />
                 <Custom label="السعر" name="price" err={errors.price}  />
+                <Custom label="الكمية" name="quantity" err={errors.quantity}  />
                 <Custom label="عمولة البائع" name="salesManCommission" err={errors.salesManCommission}  />
                 <Custom label="عمولة المشرف" name="supervisorCommission" err={errors.supervisorCommission}  />
                 <Custom label="عمولة رجل التوصيل" name="deliveryCommission" err={errors.deliveryCommission}  />

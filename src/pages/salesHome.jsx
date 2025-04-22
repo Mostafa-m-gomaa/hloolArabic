@@ -18,22 +18,29 @@ import { getOrdersAnalytics } from '@/api/orders';
 const SalesHome = () => {
 const queryClient = useQueryClient()
 
-  const [startDate,setStartDate] = React.useState("2024-12-12")
-  const [endDate,setEndDate] = React.useState(() => {
+  const [endDate, setEndDate] = React.useState(() => {
     const today = new Date();
-    const day = String(today.getDate()).padStart(2, "0"); // Ensure two digits
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
-
     return `${year}-${month}-${day}`;
-  })
+  });
+  
+  const [startDate, setStartDate] = React.useState(() => {
+    const end = new Date(endDate);
+    end.setDate(end.getDate() - 7);
+    const day = String(end.getDate()).padStart(2, "0");
+    const month = String(end.getMonth() + 1).padStart(2, "0");
+    const year = end.getFullYear();
+    return `${year}-${month}-${day}`;
+  });
 
 const {data , isLoading , isError} = useQuery({
     queryKey:['ordersAnalyticsSales',startDate,endDate],
     queryFn:()=>getOrdersAnalytics(startDate,endDate)
 })
 
-console.log(data)
+
     const {data : myCash , isLoading :myCashLoadin , isError : myCahError}=useQuery({
         queryKey:["myCash"],
         queryFn: cashVerify ,
@@ -127,11 +134,11 @@ const cashItems = myCash?.data || []
     <div className="flex w-full justify-end gap-4 flex-wrap">
 
             <HomeCard icon ={<DollarSign />} number={amount} title="اموالك" subTitle="المحفظة" color={"bg-[#f5b951]"} /> 
-            <HomeCard icon ={<Users/>} number={data?.categorizedOrders?.created || 0} title="طلباتك " subTitle="المجموع " color={"bg-[#012af9]"} />
-            <HomeCard icon ={<Users/>} number={data?.categorizedOrders?.readyToBeDelivered || 0} title="طلباتك التي تم تجهيزها" subTitle="المجموع " color={"bg-[#012af9]"} />
-            <HomeCard icon ={<Users/>} number={data?.categorizedOrders?.delivered || 0} title="طلباتك المسلمة" subTitle="المجموع " color={"bg-[#d73364]"} />
-            <HomeCard icon ={<Users/>} number={data?.categorizedOrders?.delivering || 0} title="طلباتك قيد توصيل" subTitle="المجموع " color={"bg-[#d73364]"} />
-            <HomeCard icon ={<Users/>} number={data?.categorizedOrders?.notReadyToBeDelivered || 0} title="طلباتك غير جاهزة للاستلام" subTitle="المجموع " color={"bg-[#d73364]"} />
+            <HomeCard link={"/home/myorders"} icon ={<Users/>} number={data?.categorizedOrders?.created || 0} title="طلباتك " subTitle="المجموع " color={"bg-[#012af9]"} />
+            <HomeCard link={"/home/myorders"} icon ={<Users/>} number={data?.categorizedOrders?.readyToBeDelivered || 0} title="طلباتك التي تم تجهيزها" subTitle="المجموع " color={"bg-[#012af9]"} />
+            <HomeCard link={"/home/myorders"} icon ={<Users/>} number={data?.categorizedOrders?.delivered || 0} title="طلباتك المسلمة" subTitle="المجموع " color={"bg-[#d73364]"} />
+            <HomeCard link={"/home/myorders"} icon ={<Users/>} number={data?.categorizedOrders?.delivering || 0} title="طلباتك قيد توصيل" subTitle="المجموع " color={"bg-[#d73364]"} />
+            <HomeCard link={"/home/myorders"} icon ={<Users/>} number={data?.categorizedOrders?.notReadyToBeDelivered || 0} title="طلباتك غير جاهزة للاستلام" subTitle="المجموع " color={"bg-[#d73364]"} />
             {localStorage.getItem("role") === "supervisor" &&     <HomeCard icon ={<DollarSign />} number={duesOverMe?.dues} title="اموال عليك" subTitle="المحفظة" color={"bg-[#f5b951]"} />}
         
 
@@ -139,7 +146,7 @@ const cashItems = myCash?.data || []
     </div>
      {localStorage.getItem("role") === "sales" && <SalesTargets />}
     <CustomBarChart delivered={data?.deliveredOrdersAnalytics || []} />
-    <AreaChartComponent />
+    {/* <AreaChartComponent /> */}
           </div>
         
         </div>}
