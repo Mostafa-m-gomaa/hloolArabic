@@ -123,6 +123,13 @@ export const getMyReports = (params = {} , page) => {
         body:JSON.stringify(params)
     })
   }
+  export const updateReport =(id,params)=>{
+    const url = `/reports/${id}`
+    return fetchClient(url , {
+        method:"PATCH",
+        body:JSON.stringify(params)
+    })
+  }
   export const onProgressReport =(id)=>{
     const url = `/reports/${id}`
     return fetchClient(url , {
@@ -140,6 +147,14 @@ export const getMyReports = (params = {} , page) => {
     return fetchClient(`/reports/confirm/${id}`, {
         method:"PATCH"
     })
+  }
+  export const availableRepsToUpdate =(id)=>{
+    return fetchClient(`/reports/availSupervisorToUpdateReport/${id}`, {
+        method:"PATCH"
+    })
+  }
+  export const getaAvailableRepsCountsToUpdate =(id)=>{
+    return fetchClient(`/reports/countReportUpdatePermissions/${id}`)
   }
 
 

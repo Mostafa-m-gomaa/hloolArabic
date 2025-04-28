@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import { PaginationDemo } from '@/components/Pagination'
 import ReportCard from '@/components/ReportCard'
 import { ReportsFilter } from '@/components/RepoertsFilter'
+
 // import ComboboxDemo from '@/components/CompoBox'
 const MyReports = () => {
 
@@ -47,6 +48,7 @@ if (isError) {
   
  
 const reportItems = reports?.data || []
+console.log(reportItems)
 
 
   return (

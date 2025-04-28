@@ -6,6 +6,10 @@ import reportIcon from '../assets/report.png'
 import { ShowPopOver } from './showCardPopOver';
 import { ReportPopOver } from './repoertPopOver';
 import { Link } from 'react-router-dom';
+import { availableRepsToUpdate  ,getaAvailableRepsCountsToUpdate} from '@/api/orders';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+
 
 
 const ReportCard = ({item , number , ...props}) => {
@@ -25,9 +29,29 @@ const ReportCard = ({item , number , ...props}) => {
     return `${day}/${month}/${year}`;
   };
 
+  
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return availableRepsToUpdate(item._id);
+    } ,
+    onSuccess: (data) => {
+      console.log(data);
+      if(data?.status === "success"){
+        toast.success(data.message)
+      }
+   
+    },
+  });
     
 
-   
+  const {data} =useQuery({
+    queryKey:["availableRepsToUpdate" , item._id] ,
+    queryFn:()=> getaAvailableRepsCountsToUpdate(item._id) ,
+  })
+
+
+  const numberToUpdate = data?.count || 0
 
           return (
             
@@ -54,6 +78,10 @@ const ReportCard = ({item , number , ...props}) => {
                 <div className="flex flex-col lg:flex-row items-center gap-2">
                   <ReportPopOver item={item} />
                   <Button><Link to={`/home/onereport/${item?._id}`}>عرض بالتفصيل</Link></Button>
+                  {! localStorage.getItem("role") === "supervisor"  &&  <Button onClick={mutation.mutate}>السماح بالتعديل</Button>}
+                  {localStorage.getItem("role") === "supervisor" && numberToUpdate > 0  &&  <Button><Link to={`/home/editreport/${item._id}`} >تعديل</Link></Button>}
+                  {/* <Button><Link to={`/home/editreport/${item._id}`} >تعديل</Link></Button> */}
+
                 </div>
 
    </div>

@@ -13,7 +13,7 @@ import MyTableRow from "./MyTableRow";
 
 
 export function ReportPopOver({item}) {
-  console.log(item)
+  
   const formatDate = (date) => {
     if (!date) return "N/A"; // Return a default value if the date is undefined
     const validDate = new Date(date);

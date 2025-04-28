@@ -28,6 +28,7 @@ import UndeliveredOrders from './pages/undeliveredOrders';
 import Targets from './pages/Targets';
 import AddTarget from './pages/AddTarget';
 import SalesReward from './pages/SalesRewards';
+import EditReport from './pages/EditRep';
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
     <Route path="onereport/:id" element={<ReportDetails/>} />
     <Route path="targets" element={<Targets/>} />
     <Route path="salesrewards" element={<SalesReward/>} />
+    <Route path="editreport/:id" element={<EditReport/>} />
     </Route>
   </Routes>
 </div>
