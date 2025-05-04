@@ -48,7 +48,7 @@ const {data , isLoading , isError} = useQuery({
     queryKey:['ordersAnalytics',startDate,endDate],
     queryFn:()=>getOrdersAnalytics(startDate,endDate)
 })
-
+console.log(data)
 
 
 

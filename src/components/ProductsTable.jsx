@@ -32,6 +32,8 @@ import Loader from "./Loader"
 
     const theProducts = products || []
 
+    console.log(theProducts)
+
     const setActive =(id , active)=>{
         const obj ={
             active : !active
@@ -53,6 +55,7 @@ import Loader from "./Loader"
             <TableHead className="">عمولة المشرف</TableHead>
             <TableHead className="">عمولة المندوب</TableHead>
             <TableHead className="">عمولة التوصيل</TableHead>
+            <TableHead className="">الكمية</TableHead>
             <TableHead className="">نشط</TableHead>
           </TableRow>
           </TableHeader>
@@ -66,6 +69,7 @@ import Loader from "./Loader"
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.supervisorCommission}</TableCell>
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.salesManCommission}</TableCell>
     <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.deliveryCommission || "لا يوجد"}</TableCell>
+    <TableCell className="w-[24%] border-r-2 border-gray-400 overflow-hidden" >{item?.quantity || "لا يوجد"}</TableCell>
     <TableCell className="max-w-[15%]  border-gray-400 overflow-hidden" >{item.active ? <div className="bg-green-700 text-white px-2">active </div> : <div className="bg-red-600 text-white px-2">un active </div>}</TableCell>
     <TableCell  >
       <DropdownMenu>

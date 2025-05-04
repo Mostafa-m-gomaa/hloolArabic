@@ -55,8 +55,6 @@ export function ShowPopOver({item}) {
                 <div className="">مسئول التوصيل</div>
                 <div className="">عمولة التوصيل</div>
                 <div className="">اصدار البطاقة</div>
-
-              
                 <div className="">مبلغ العربون</div>
                 <div className="">طريقة دفع مبلغ العربون</div>
                 <div className="">طريقة دفع الدفعه الباقي</div>

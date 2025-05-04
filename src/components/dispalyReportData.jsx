@@ -31,6 +31,23 @@ const onProgressMutation = useMutation({
     }
 })
 
+
+const formatDate = (date) => {
+  if (!date) return "N/A"; // Return a default value if the date is undefined
+  const validDate = new Date(date);
+
+  if (isNaN(validDate.getTime())) {
+    return "Invalid Date"; // Return a fallback value if the date is invalid
+  }
+
+  // Extract month, day, and year
+  const month = validDate.getMonth() + 1; // Months are zero-based
+  const day = validDate.getDate();
+  const year = validDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
  
   return (
     <div className="grid gap-6 p-6">
@@ -44,9 +61,9 @@ const onProgressMutation = useMutation({
           <p><strong>حالة التقرير</strong> {report?.status === "pending" ? "في انتظار تاكيد المطابق": report?.status}</p>
           <p><strong>المبلغ المتبقي مع المشرف</strong> {report?.gottenRestCompanyMoney || 0}</p>
           <p><strong>الوصف</strong> {report?.description || "لا يوجد وصف"}</p>
-          <p><strong>تاريخ التقرير</strong> {new Date(report?.reportDate).toLocaleDateString()}</p>
-          <p><strong>تاريخ الانشاء</strong> {new Date(report?.createdAt).toLocaleDateString()}</p>
-          <p><strong>تاريخ التعديل</strong> {new Date(report?.updatedAt).toLocaleDateString()}</p>
+          <p><strong>تاريخ التقرير</strong> {formatDate(report?.reportDate)}</p>
+          <p><strong>تاريخ الانشاء</strong> {formatDate(report?.createdAt)}</p>
+          <p><strong>تاريخ التعديل</strong> {formatDate(report?.updatedAt)}</p>
           {localStorage.getItem("role") === "validator" && ["معلق","قيد المطابقه" ].includes(report?.status)  &&  <Button disabled={mutation.isPending} type="button" onClick={mutation.mutate}>{mutation.isPending ? <Loader className="animate-spin" />:"تأكيد التقرير"}</Button>}
           {localStorage.getItem("role") === "validator" && report?.status=== "معلق" &&  report?.status != "قيد المطابقه" &&  <Button disabled={onProgressMutation.isPending} type="button" onClick={onProgressMutation.mutate}>{onProgressMutation.isPending ? <Loader className="animate-spin" />:"قيد المطابقة"}</Button>}
     

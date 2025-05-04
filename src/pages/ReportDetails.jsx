@@ -18,7 +18,7 @@ const {data : details , isLoading ,isErro} =useQuery({
 })
 
 const reportDetails = details?.report || []
-const salesOrders = details?.report?.salesMenOrders || []
+const salesOrders = details?.salesMenOrders || []
 
 
 console.log(details)

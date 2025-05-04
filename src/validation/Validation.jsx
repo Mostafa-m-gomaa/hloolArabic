@@ -58,15 +58,16 @@ export const addOrderValidation = Yup.object({
   product: Yup.string().required('يجب أن تختار المنتج'),
   notes: Yup.string(),
 
-  customersData: Yup.array()
-    .of(
-      Yup.object().shape({
-        customerName: Yup.string().required('يجب أن تدخل اسم العميل'),
-        phone: Yup.string().required('يجب أن تدخل رقم الهاتف'),
-        birthDate: Yup.string().required('يجب أن تدخل تاريخ الميلاد'),
-        gender: Yup.string().required('يجب أن تختار الجنس'),
-      })
-    )
+  customersData: Yup.array().of(
+    Yup.object().shape({
+      customerName: Yup.string().required('يجب أن تدخل اسم العميل'),
+      phone: Yup.string()
+        .required('يجب أن تدخل رقم الهاتف')
+        .matches(/^05\d{8}$/, 'رقم الهاتف يجب أن يتكون من 10 أرقام ويبدأ بـ 05'),
+      birthDate: Yup.string().required('يجب أن تدخل تاريخ الميلاد'),
+      gender: Yup.string().required('يجب أن تختار الجنس'),
+    })
+  )
     .min(1, 'يجب إدخال بيانات عميل واحد على الأقل'),
 })
 

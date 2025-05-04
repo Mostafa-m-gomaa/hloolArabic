@@ -10,9 +10,10 @@ import { toast } from 'react-hot-toast';
 import { Loader2Icon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+
 const Card = ({number ,item , anim , ...props}) => {
 const role = localStorage.getItem("role")
-    
+
 const formatDate = (date) => {
   if (!date) return "N/A"; // Return a default value if the date is undefined
   const validDate = new Date(date);
@@ -84,7 +85,7 @@ const retrieveMutation = useMutation({
     <div className="flex flex-col items-end gap-3 w-[70%]">
     <h2 className="font-bold text-[15px] lg:text-xl">{item?.product || "not-found"}</h2>
                   <div className="max-w-full flex flex-col lg:flex-row gap-2 text-[10px] lg:text-[15px] px-1 items-end lg:items-center *:min-w-fit  *:flex  *:items-center *:rounded-md  *:text-center  *:gap-2 *:flex-row-reverse  ">
-                    <div><span>اسم العميل</span> : <span>{item.customerName}</span> </div>
+                    <div><span> اسم العميل الاول</span> : <span>{item?.customersData[0]?.customerName}</span> </div>
                     <div><span>رقم سند العربون</span> : <span>{item.receipt || "لا يوجد رقم سند"}</span> </div>
                     <div><span>تاريخ الميلاد</span> : <span>{formatDate(item.birthDate)}</span> </div>
 

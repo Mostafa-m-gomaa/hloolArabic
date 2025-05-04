@@ -171,16 +171,29 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { updateOrder } from '@/api/orders'
+import { getOneOrder } from '@/api/orders'
 
 const EditOrder = () => {
   const queryClient = useQueryClient()
   const history = useNavigate()
+  
 
   const { data: superVisors } = useQuery({
     queryKey: ['users'],
     queryFn: getSuperVisors
   })
   const superVisorsItems = superVisors?.data || []
+  const { id } = useParams()
+
+  // Fetch current product data
+  const { data: order, isLoading } = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => getOneOrder(id),
+  })
+console.log(order)
+const orderData = order?.data || {}
+
+
 
   const { data: products } = useQuery({
     queryKey: ['products'],
@@ -198,22 +211,22 @@ const EditOrder = () => {
   }
 
   const initialValues = {
-    customersData: [customer],
-    receipt: '',
-    supervisor: '',
-    sellingDate: '',
-    country: '',
-    city: '',
-    product: '',
-    deposit: '',
-    depositPaymentMethod: '',
-    deliveryDate: '',
-    notes: ''
+    customersData: orderData?.customersData || [customer],
+    receipt: orderData?.receipt || '',
+    supervisor: orderData?.supervisor || '',
+    sellingDate: orderData?.sellingDate || '',
+    country: orderData?.country || '',
+    city: orderData?.city || '',
+    product: orderData?.product || '',
+    deposit: orderData?.deposit || '',
+    depositPaymentMethod: orderData?.depositPaymentMethod || '',
+    deliveryDate: orderData?.deliveryDate || '',
+    notes: orderData?.notes || ''
   }
 
 
 
-  const id = useParams().id
+ 
 const mutation = useMutation({
   mutationFn: ({ values, id }) => updateOrder(values, id),
   onSuccess: (res) => {
@@ -229,13 +242,13 @@ const mutation = useMutation({
 });
 
 const onSubmit = (values) => {
-  const filteredValues = Object.fromEntries(
-      Object.entries(values).filter(([_, value]) => value !== "")
-  );
+  // const filteredValues = Object.fromEntries(
+  //     Object.entries(values).filter(([_, value]) => value !== "")
+  // );
 
   
-  // mutation.mutate({ values: filteredValues, id });
-  console.log(filteredValues)
+  mutation.mutate({ values , id });
+ 
 };
 
  
